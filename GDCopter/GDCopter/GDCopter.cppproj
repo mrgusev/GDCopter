@@ -133,8 +133,21 @@
     <Compile Include="Resources\Wire\Wire.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Services\ClientService.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Services\RotorService.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Services\SensorsService.cpp">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controller" />
+    <Folder Include="Math" />
+    <Folder Include="Services" />
+    <Folder Include="Stabilizator" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\I2CDev" />
     <Folder Include="Resources\Sensors" />
