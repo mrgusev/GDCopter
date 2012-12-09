@@ -58,7 +58,7 @@
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>C:\Users\Kirill\Documents\Atmel Studio\ArduinoCore</Value>
+      <Value>../../../ArduinoCore</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -71,7 +71,10 @@
   <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>C:\Users\Kirill\Documents\Atmel Studio\ArduinoCore</Value>
+      <Value>../../../ArduinoCore</Value>
+      <Value>../Resources/Wire</Value>
+      <Value>../Resources/Sensors</Value>
+      <Value>../Resources/I2CDev</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
@@ -88,7 +91,7 @@
   </avrgcccpp.linker.libraries.Libraries>
   <avrgcccpp.linker.libraries.LibrarySearchPaths>
     <ListValues>
-      <Value>C:\Users\Kirill\Documents\Atmel Studio\ArduinoCore</Value>
+      <Value>../../../ArduinoCore</Value>
     </ListValues>
   </avrgcccpp.linker.libraries.LibrarySearchPaths>
   <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
@@ -100,9 +103,42 @@
     <Compile Include="GDCopter.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Resources\I2CDev\I2Cdev.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\I2CDev\I2Cdev.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Sensors\HMC5883L.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Sensors\HMC5883L.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Sensors\MPU6050.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Sensors\MPU6050.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Wire\twi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Wire\twi.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Wire\Wire.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Wire\Wire.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Headers" />
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\I2CDev" />
+    <Folder Include="Resources\Sensors" />
+    <Folder Include="Resources\Wire" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
