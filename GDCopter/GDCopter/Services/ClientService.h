@@ -15,12 +15,12 @@ class ClientService
 	
 	void SendOrientation()
 	{
-		Vector3i orientation = _stabilizator->GetOrientation();
-		Serial.print(orientation.x);
+		//Vector3<float> orientation ;//= _stabilizator->GetOrientation();
+		Serial.print(_stabilizator->GetYaw());
 		Serial.print("#");
-		Serial.print(orientation.y);
+		Serial.print(_stabilizator->GetRoll());
 		Serial.print("#");
-		Serial.println(orientation.z);
+		Serial.println(_stabilizator->GetPitch());
 	}
 	
 	void SendSensorsValues()

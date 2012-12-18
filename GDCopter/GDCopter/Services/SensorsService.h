@@ -55,6 +55,7 @@ class SernsorsService
 	int zGyroOffset;
 	void CalibrateGyro()
 	{
+		accelgyro.setFullScaleGyroRange(4);
 		long sumX = 0;
 		long sumY = 0;
 		long sumZ = 0;
@@ -64,7 +65,6 @@ class SernsorsService
 			sumX += gx;
 			sumY += gy;
 			sumZ += gz;
-			delay(1);
 		}
 		xGyroOffset=sumX/1000;
 		yGyroOffset=sumY/1000;

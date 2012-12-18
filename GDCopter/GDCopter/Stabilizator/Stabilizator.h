@@ -7,6 +7,14 @@
 
 #include "SensorsService.h"
 #include "matrix3.h"
+const int INTEGR_DELAY = 20;
+const int SERIAL_DELAY = 100;
+
+// Pololu LPR550AL
+const float vref = 3.3f;
+const float vzero = 1.23f;
+const float sens = 0.0005f;
+const float adc = 1023.f;
 class Stabilizator
 {
 	public:
@@ -17,12 +25,12 @@ class Stabilizator
 		rotationMatrix.a = Vector3i(1,0,0);
 		rotationMatrix.b = Vector3i(0,1,0);
 		rotationMatrix.c = Vector3i(0,0,1);
-		earthAngles = Vector3i(1,1,1);
+		//earthAngles = Vector3l(0,0,0);
 		planeAngles = Vector3i(1,1,1);
 		
-		x=0;
-		y=0;
-		z=0;
+		x=0.f;
+		y=0.f;
+		z=0.f;
 	}
 	
 	void UpdateSensorsData()
@@ -34,6 +42,7 @@ class Stabilizator
 	{
 		unsigned long currentMillis = millis();
 		dt = currentMillis - previousMillis;
+	
 		fx = sensorsService.GetGyroValues().x * dt;
 		fy = sensorsService.GetGyroValues().y * dt;
 		fz = sensorsService.GetGyroValues().z * dt;
@@ -42,14 +51,17 @@ class Stabilizator
 		tempMatrix.b = Vector3i(fz,1,-fx);
 		tempMatrix.c = Vector3i(-fy,fx,1);
 		rotationMatrix = rotationMatrix.operator *(tempMatrix);		
-		x += fx;
-		y += fy;
-		z += fz;;
-		
+		x +=  (((sensorsService.GetGyroValues().x)/adc)/sens)*dt;
+		y +=  (((sensorsService.GetGyroValues().y)/adc)/sens)*dt;
+		z +=  (((sensorsService.GetGyroValues().z)/adc)/sens)*dt;
+	
+		earthAngles.x = x;
+		earthAngles.y = y;
+		earthAngles.z = z;
 		//
-		//Serial.println(currentMillis);
-		//Serial.println(previousMillis);
-		//Serial.println("@");
+		Serial.println(currentMillis);
+		Serial.println(previousMillis);
+		Serial.println("@");
 		//Serial.println(fx);
 		//Serial.println(fy);
 		//Serial.println(fz);
@@ -70,38 +82,39 @@ class Stabilizator
 		return sensorsService.GetCompassValues();
 	}
 	
-	Vector3i GetOrientation()
+	Vector3l GetOrientation()
 	{
 		return earthAngles;		
 	}
 	
-	int GetPitch()
+	float GetPitch()
 	{
-		return fx;
+		return x;
 	}
-	int GetYaw()
+	float GetYaw()
 	{
-		return fy;
+		return y;
 	}
-	int GetRoll()
+	float GetRoll()
 	{
-		return fz;
+		return z;
 	}
 	private:
 	long previousMillis;
 	SernsorsService sensorsService;
 	Matrix3i rotationMatrix;
 	Vector3i planeAngles;
-	Vector3i earthAngles;
+	Vector3l earthAngles;
+	
 	
 	int dt;
 	int fx;
 	int fy;
 	int fz;
 	
-	int x;
-	int y;
-	int z;
+	float x;
+	float y;
+	float z;
 	
 	
 	
