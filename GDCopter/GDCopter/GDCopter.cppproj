@@ -75,6 +75,9 @@
       <Value>../Resources/Wire</Value>
       <Value>../Resources/Sensors</Value>
       <Value>../Resources/I2CDev</Value>
+      <Value>../Math</Value>
+      <Value>../Services</Value>
+      <Value>../Stabilizator</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
@@ -101,6 +104,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GDCopter.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Math\matrix3.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Math\vector2.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Math\vector3.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Resources\I2CDev\I2Cdev.cpp">
@@ -133,20 +145,23 @@
     <Compile Include="Resources\Wire\Wire.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Services\ClientService.cpp">
+    <Compile Include="Services\ClientService.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Services\RotorService.cpp">
+    <Compile Include="Services\RotorService.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Services\SensorsService.cpp">
+    <Compile Include="Services\SensorsService.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Stabilizator\Stabilizator.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controller" />
-    <Folder Include="Math" />
-    <Folder Include="Services" />
+    <Folder Include="Math\" />
+    <Folder Include="Services\" />
     <Folder Include="Stabilizator" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\I2CDev" />
