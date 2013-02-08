@@ -7,26 +7,44 @@
 
 #include "SensorsService.h"
 #include "matrix3.h"
-const int INTEGR_DELAY = 20;
-const int SERIAL_DELAY = 100;
 
-// Pololu LPR550AL
-const float vref = 3.3f;
-const float vzero = 1.23f;
-const float sens = 0.0005f;
-const float adc = 1023.f;
 class Stabilizator
 {
+	private:
+	long previousMillis;
+	SernsorsService sensorsService;
+	Matrix3f RotationMatrix;
+	Vector3i planeAngles;
+	Vector3l earthAngles;	
+	
+	int dt;
+	int fx;
+	int fy;
+	int fz;
+	
+	float x;
+	float y;
+	float z;
+	
 	public:
+	
+	float filterGyroCoef;
+	float filterAccelCoef;
+	float filterCompasCoef;
+	
 	void Initialize()
 	{
 		sensorsService.Innitialize();
 		previousMillis = 0;
-		rotationMatrix.a = Vector3i(1,0,0);
-		rotationMatrix.b = Vector3i(0,1,0);
-		rotationMatrix.c = Vector3i(0,0,1);
+		RotationMatrix.a = Vector3f(1,0,0);
+		RotationMatrix.b = Vector3f(0,1,0);
+		RotationMatrix.c = Vector3f(0,0,1);
 		//earthAngles = Vector3l(0,0,0);
 		planeAngles = Vector3i(1,1,1);
+		
+		filterGyroCoef=0.5;
+		filterAccelCoef=0.25;
+		filterCompasCoef=0.25;
 		
 		x=0;
 		y=0;
@@ -42,7 +60,39 @@ class Stabilizator
 	{
 		unsigned long currentMillis = micros();
 		dt = currentMillis - previousMillis;
-		//
+		
+		Vector3<float> currentGyroValues = GetGyroValues();
+		Vector3<float> currentAccelValues = GetAccelValues();
+		Vector3<float> currentCompassValues = GetCompassValues();
+		
+		//¬ычисл€ем длины векторов, дл€ нахождени€ косинусов углов между ними и ос€ми
+		float gravityVectorLength = currentAccelValues.length();
+		float magneticVectorLength = currentCompassValues.length();
+		
+		//¬ычисл€ем косинусы углов между ос€ми инерционной и объектной систем
+		//¬ычисленные косинусы составл€ют первую и третью строки матрицы дл€ данной итерации
+		Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
+		Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
+		
+		//Ќаходим угловое приращение трем€ разными способами
+		Vector3f gyroAngularDisplacement = currentGyroValues * dt;		
+		Vector3f accelAngularDisplacement = RotationMatrix.c % (currentRotationMatrixThirdRow - RotationMatrix.c);
+		Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
+		
+		//Ќаходим среднее между трем€ способами
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement * filterGyroCoef + accelAngularDisplacement * filterAccelCoef + compasAngularDisplacement * filterCompasCoef;
+		
+		//Ќаходим новую матрицу поворота
+		RotationMatrix.a += (RotationMatrix.a % averageAngularDisplacement);
+		RotationMatrix.c += (RotationMatrix.c % averageAngularDisplacement);
+		float error = (RotationMatrix.a * RotationMatrix.c) / 2;		
+		Vector3f rotationMatrixOldA = RotationMatrix.a;		
+		RotationMatrix.a -= RotationMatrix.c * error;
+		RotationMatrix.a.normalize();
+		RotationMatrix.c -= rotationMatrixOldA * error;
+		RotationMatrix.c.normalize();		
+		RotationMatrix.b = RotationMatrix.a % RotationMatrix.c;
+		
 		//fx = sensorsService.GetGyroValues().x * dt;
 		//fy = sensorsService.GetGyroValues().y * dt;
 		//fz = sensorsService.GetGyroValues().z * dt;
@@ -55,11 +105,11 @@ class Stabilizator
 		//y +=  (((sensorsService.GetGyroValues().y)/adc))*dt;
 		//z +=  (((sensorsService.GetGyroValues().z)/adc))*dt;
 		
-		x += (float)sensorsService.GetGyroValues().x*((float)dt/1000000)/14.375; // Without any filter
+		x += averageAngularDisplacement.x;//(float)sensorsService.GetGyroValues().x*((float)dt/1000000)/14.375; // Without any filter
 		
-		y += (float)sensorsService.GetGyroValues().y*((float)dt/1000000)/14.375; // Without any filter
+		y += averageAngularDisplacement.y;//(float)sensorsService.GetGyroValues().y*((float)dt/1000000)/14.375; // Without any filter
 		
-		z += (float)sensorsService.GetGyroValues().z*((float)dt/1000000)/14.375; // Without any filter
+		z += averageAngularDisplacement.z;//(float)sensorsService.GetGyroValues().z*((float)dt/1000000)/14.375; // Without any filter
 		
 		//double accXangle = getXangle();
 		//
@@ -87,11 +137,11 @@ class Stabilizator
 	{
 		return sensorsService.GetGyroValues();
 	}
-	Vector3<int> GetAccelValues()
+	Vector3<float> GetAccelValues()
 	{
 		return sensorsService.GetAccelValues();
 	}
-	Vector3<int> GetCompassValues()
+	Vector3<float> GetCompassValues()
 	{
 		return sensorsService.GetCompassValues();
 	}
@@ -113,25 +163,4 @@ class Stabilizator
 	{
 		return z;
 	}
-	
-	private:
-	long previousMillis;
-	SernsorsService sensorsService;
-	Matrix3i rotationMatrix;
-	Vector3i planeAngles;
-	Vector3l earthAngles;
-	
-	
-	int dt;
-	int fx;
-	int fy;
-	int fz;
-	
-	float x;
-	float y;
-	float z;
-	
-	
-	
-	
 };

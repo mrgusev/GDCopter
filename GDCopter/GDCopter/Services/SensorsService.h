@@ -26,6 +26,8 @@ class SernsorsService
 		yGyroOffset = 6.68f;
 		zGyroOffset = -14.30f;	
 		
+		//To add the definition for the magntometer and accel offsets
+		
 	}
 	
 	void UpdateValues()
@@ -38,13 +40,13 @@ class SernsorsService
 	{
 		return Vector3<float>((float)gx-xGyroOffset,(float)gy-yGyroOffset,(float)gz-zGyroOffset);
 	} 
-	Vector3<int> GetAccelValues()
+	Vector3<float> GetAccelValues()
 	{
-		return Vector3<int>(ax,ay,az);
+		return Vector3<float>((float)ax-xAccelOffset,(float)ay-yAccelOffset,(float)az-zAccelOffset);
 	}
-	Vector3<int> GetCompassValues()
+	Vector3<float> GetCompassValues()
 	{
-		return Vector3<int>(mx,my,mz);
+		return Vector3<float>((float)mx-xCompassOffset,(float)my-yCompassOffset,(float)mz-zCompassOffset);
 	}
 	
 	void SendGyroOffsets()
@@ -65,6 +67,13 @@ class SernsorsService
 	float xGyroOffset;
 	float yGyroOffset;
 	float zGyroOffset;
+	int xAccelOffset;
+	int yAccelOffset;
+	int zAccelOffset;
+	int xCompassOffset;
+	int yCompassOffset;
+	int zCompassOffset;
+	
 	void CalibrateGyro()
 	{
 		

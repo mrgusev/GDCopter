@@ -26,8 +26,8 @@ class ClientService
 	void SendSensorsValues()
 	{
 		Vector3<float> gyroVec = _stabilizator->GetGyroValues();
-		Vector3<int> accelVec = _stabilizator->GetAccelValues();
-		Vector3<int> compassVec = _stabilizator->GetCompassValues();
+		Vector3<float> accelVec = _stabilizator->GetAccelValues();
+		Vector3<float> compassVec = _stabilizator->GetCompassValues();
 		Serial.print(gyroVec.x);
 		Serial.print("#");
 		Serial.print(gyroVec.y);
