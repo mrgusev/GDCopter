@@ -1,8 +1,50 @@
-﻿<Window x:Class="GDCopter.Client.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:charting="http://research.microsoft.com/DynamicDataDisplay/1.0" xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" xmlns:Primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Layout.Toolkit" xmlns:Common="clr-namespace:GDCopter_Client.Common" xmlns:Views="clr-namespace:GDCopter.Client.Views" x:Name="window" x:Class="GDCopter.Client.MainWindow"
+        Title="MainWindow" Height="500" Width="525" >
+    <Window.Resources>
+        <Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="23"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="107"/>
+            <ColumnDefinition/>
+
+        </Grid.ColumnDefinitions>
+        <StackPanel DataContext="{Binding DataContext, ElementName=window}" Grid.Column="0" HorizontalAlignment="Left" Width="97" Margin="10,10,0,0" Grid.RowSpan="2">
+            <RadioButton DataContext="{Binding ApplicationStatusModel}" Content="Control panel" IsChecked="{Binding IsControl, Mode=TwoWay}" Margin="0,0,0,10"/>
+            <RadioButton DataContext="{Binding ApplicationStatusModel}" Content="Flight data" IsChecked="{Binding IsFlightData, Mode=TwoWay}" Margin="0,0,0,10"/>
+            <RadioButton DataContext="{Binding ApplicationStatusModel}" Content="Test panel" IsChecked="{Binding IsTest, Mode=TwoWay}" Margin="0,0,0,10"/>
+            <RadioButton x:Name="radioButton" DataContext="{Binding ApplicationStatusModel}" Content="Terminal" IsChecked="{Binding IsTerminal, Mode=TwoWay}" Margin="0,0,0,10"/>
+            <RadioButton DataContext="{Binding ApplicationStatusModel}" Content="Settings" IsChecked="{Binding IsProperties, Mode=TwoWay}"/>
+        </StackPanel>
+        <Views:TerminalView DataContext="{Binding TerminalModel}" Grid.Column="1" Margin="10" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=radioButton}"/>
+        <CheckBox x:Name="checkBox" Content="CheckBox" Grid.Column="1" Margin="0,4,5,4" Grid.Row="1" HorizontalAlignment="Right" Width="71"/>
+        <Views:ConnectionView DataContext="{Binding ConnectionModel}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="219" BorderBrush="#FF363636" BorderThickness="1" Height="160" Grid.ColumnSpan="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=checkBox}"/>
+        <!--<TabControl  DataContext="ApplicationStatusModel"  >
+            <TabItem Header="Control panel">
+                <Grid Background="#FFE5E5E5">
+                    <StatusBar Height="20" VerticalAlignment="Bottom"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Flight data">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Test panel">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Terminal">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Configuration">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>-->
     </Grid>
 </Window>
