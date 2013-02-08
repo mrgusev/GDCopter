@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class ApplicationStatusModel : INotifyPropertyChanged
+    class ApplicationStatusModel : ModelBase
     {
         private bool _isTest;
 
@@ -18,6 +18,8 @@ namespace GDCopter.Client.Models
         private bool _isFlightData;
 
         private bool _isConnection;
+
+        private bool _isTerminal;
 
         public bool IsTest
         {
@@ -59,6 +61,16 @@ namespace GDCopter.Client.Models
             }
         }
 
+        public bool IsTerminal
+        {
+            get { return _isTerminal; }
+            set
+            {
+                _isTerminal = value;
+                OnPropertyChanged("IsTerminal");
+            }
+        }
+
         public bool IsConnection
         {
             get { return _isConnection; }
@@ -67,14 +79,6 @@ namespace GDCopter.Client.Models
                 _isConnection = value;
                 OnPropertyChanged("IsConnection");
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

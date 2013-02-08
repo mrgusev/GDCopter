@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class SensorsDataModel : INotifyPropertyChanged 
+    internal class SensorsDataModel : ModelBase
     {
         public SensorsDataModel()
         {
@@ -18,23 +18,15 @@ namespace GDCopter.Client.Models
             GyroValues.CollectionChanged += CollectionChanged;
         }
 
-        void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged("GyroValues");
         }
-        
+
         public ObservableCollection<StatisticPoint> GyroValues { get; set; }
 
         public ObservableCollection<StatisticPoint> AccellValues { get; set; }
-        
+
         public ObservableCollection<StatisticPoint> CompassValues { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Windows.UI.Xaml.Data;
+using System.Windows.Data;
 
 namespace GDCopter_Client.Common
 {

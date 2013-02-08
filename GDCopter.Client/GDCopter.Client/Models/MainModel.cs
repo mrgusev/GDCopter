@@ -4,12 +4,31 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GDCopter.Client.Services;
 
 namespace GDCopter.Client.Models
 {
-    class MainModel : INotifyPropertyChanged
+    class MainModel : ModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public MainModel()
+        {
+            ConnectionModel = new ConnectionModel();
+            ConfigurationModel = new ConfigurationModel();
+            SensorsDataModel = new SensorsDataModel();
+            OrientationModel = new OrientationModel();
+            ApplicationStatusModel = new ApplicationStatusModel{IsControl = true};
+            CommunicationService = new CommunicationService(ConnectionModel);
+            TestService = new TestService();
+            TerminalModel = new TerminalModel();
+            TerminalService = new TerminalService(CommunicationService, TerminalModel);
+        }
+        public CommunicationService CommunicationService { get; set; }
+
+        public TerminalService TerminalService { get; set; }
+
+        public TestService TestService { get; set; }
+
+        public StatisticService StatisticService { get; set; }
 
         public ConnectionModel ConnectionModel { get; set; }
 
@@ -21,10 +40,7 @@ namespace GDCopter.Client.Models
 
         public ApplicationStatusModel ApplicationStatusModel { get; set; }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public TerminalModel TerminalModel { get; set; }
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class ConfigurationModel
+    class ConfigurationModel : ModelBase
     {
     }
 }

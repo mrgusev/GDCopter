@@ -6,20 +6,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="165.037" d:DesignWidth="211.654">
   
-    <Grid>
+    <Grid Background="#FFFBFBFB">
         <TextBlock HorizontalAlignment="Left" Margin="9,42,0,0" TextWrapping="Wrap" Text="Baudrate" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="9,84,0,0" TextWrapping="Wrap" Text="Port" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="82,42,0,0" SelectedValue="{Binding BaudRate, Mode=TwoWay}" VerticalAlignment="Top" Width="120">
-            <ComboBoxItem Content="4800"/>
-            <ComboBoxItem Content="9600"/>
-            <ComboBoxItem Content="14400"/>
-            <ComboBoxItem Content="19200"/>
-            <ComboBoxItem Content="38400"/>
-            <ComboBoxItem Content="57600"/>
-            <ComboBoxItem Content="115200"/>
+        <ComboBox Name="baudrateComboBox" HorizontalAlignment="Left" Margin="82,42,0,0" SelectedValue="{Binding BaudRate, Mode=TwoWay}" VerticalAlignment="Top" Width="120">
+           
         </ComboBox>
         <ComboBox Name="portsComboBox" SelectedValue="{Binding Port, Mode=TwoWay}" HorizontalAlignment="Left" Margin="82,84,0,0" VerticalAlignment="Top" Width="120"/>
-        <StackPanel  Visibility="{Binding Status, Converter=BooleanToVisibilityConverter}" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" Orientation="Horizontal">
+        <StackPanel  Visibility="{Binding Status}" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" Orientation="Horizontal">
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="0" TextWrapping="Wrap" Text="Connected" VerticalAlignment="Top"/>
             <Path Stretch="Fill" StrokeThickness="1" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FF61CC61" Data="F1 M 274.316,158.702L 277.5,161.643L 269.843,170.654L 267.022,173.974L 263.838,171.033L 258.758,166.341L 261.579,163.022L 266.659,167.713L 274.316,158.702 Z " HorizontalAlignment="Left" Width="18.742" Height="15.271" VerticalAlignment="Top" Margin="10,0,0,0"/>
         </StackPanel>

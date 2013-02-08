@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class RotorTestModel : INotifyPropertyChanged
+    class RotorTestModel : ModelBase
     {
         private int _rotor1Thrust;
 
@@ -52,14 +52,6 @@ namespace GDCopter.Client.Models
                 _rotor4Thrust = value;
                 OnPropertyChanged("Rotor4Thrust");
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

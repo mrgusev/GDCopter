@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class ConnectionModel : INotifyPropertyChanged
+    public class ConnectionModel : ModelBase
     {
         private string _port;
 
-        private string _baudRate;
+        private int _baudRate;
 
-        private bool _status;
+        private bool _isOpen;
 
         public string Port
         {
@@ -25,7 +25,7 @@ namespace GDCopter.Client.Models
             }
         }
 
-        public string BaudRate
+        public int BaudRate
         {
             get { return _baudRate; }
             set
@@ -35,22 +35,14 @@ namespace GDCopter.Client.Models
             }
         }
 
-        public bool Status
+        public bool IsOpen
         {
-            get { return _status; }
+            get { return _isOpen; }
             set
             {
-                _status = value;
-                OnPropertyChanged("Status");
+                _isOpen = value;
+                OnPropertyChanged("IsOpen");
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

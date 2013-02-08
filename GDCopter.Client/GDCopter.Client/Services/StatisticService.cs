@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Services
 {
-    class StatisticService
+    public class StatisticService
     {
+
     }
 }

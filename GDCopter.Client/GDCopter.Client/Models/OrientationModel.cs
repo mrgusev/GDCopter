@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class OrientationModel : INotifyPropertyChanged
+    class OrientationModel : ModelBase
     {
         private double _yaw;
 
@@ -55,14 +55,6 @@ namespace GDCopter.Client.Models
                 _altitude = value;
                 OnPropertyChanged("Altitude");
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

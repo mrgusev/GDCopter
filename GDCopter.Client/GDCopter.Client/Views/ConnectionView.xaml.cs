@@ -25,12 +25,23 @@ namespace GDCopter.Client.Views
         public ConnectionView()
         {
             InitializeComponent();
-            portsComboBox.ItemsSource= SerialPort.GetPortNames();
+            foreach (var item in SerialPort.GetPortNames())
+            {
+                portsComboBox.Items.Add(item);
+            }
+            baudrateComboBox.Items.Add(4800);
+            baudrateComboBox.Items.Add(9600);
+            baudrateComboBox.Items.Add(14400);
+            baudrateComboBox.Items.Add(19200);
+            baudrateComboBox.Items.Add(38400);
+            baudrateComboBox.Items.Add(57600);
+            baudrateComboBox.Items.Add(115200);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            var model = (ConnectionModel) DataContext;
+            model.IsOpen = !model.IsOpen;
         }
     }
 }
