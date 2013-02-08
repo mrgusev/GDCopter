@@ -7,18 +7,31 @@
 #include "ClientService.h"
 Stabilizator stabilizator;
 ClientService clientService;
+
+long previousMillis;
 void setup()
 {
 	stabilizator.Initialize();
 	clientService.Initialize(&stabilizator);
+	pinMode(13,OUTPUT);
 }
 
-
+bool blinkState = false;
 void loop()
 {
+	
 	stabilizator.UpdateSensorsData();
 	stabilizator.CalculateAngles();
-
-	clientService.SendOrientation();	
+	
+	clientService.SendOrientation();
+//	blinkState = !blinkState;
+	
+//
+	//clientService.SendOrientation();	
+	
+	//unsigned long currentMillis = millis();
+	//int dt = currentMillis - previousMillis;
+	//Serial.println(dt);
+	//previousMillis=currentMillis;
 	
 }

@@ -28,48 +28,62 @@ class Stabilizator
 		//earthAngles = Vector3l(0,0,0);
 		planeAngles = Vector3i(1,1,1);
 		
-		x=0.f;
-		y=0.f;
-		z=0.f;
+		x=0;
+		y=0;
+		z=0;
 	}
-	
 	void UpdateSensorsData()
 	{
+		//sensorsService.SendGyroOffsets();
 		sensorsService.UpdateValues();
 	}
 	
 	void CalculateAngles()
 	{
-		unsigned long currentMillis = millis();
+		unsigned long currentMillis = micros();
 		dt = currentMillis - previousMillis;
-	
-		fx = sensorsService.GetGyroValues().x * dt;
-		fy = sensorsService.GetGyroValues().y * dt;
-		fz = sensorsService.GetGyroValues().z * dt;
-		Matrix3i tempMatrix;
-		tempMatrix.a = Vector3i(1,-fz,fy);
-		tempMatrix.b = Vector3i(fz,1,-fx);
-		tempMatrix.c = Vector3i(-fy,fx,1);
-		rotationMatrix = rotationMatrix.operator *(tempMatrix);		
-		x +=  (((sensorsService.GetGyroValues().x)/adc)/sens)*dt;
-		y +=  (((sensorsService.GetGyroValues().y)/adc)/sens)*dt;
-		z +=  (((sensorsService.GetGyroValues().z)/adc)/sens)*dt;
-	
+		//
+		//fx = sensorsService.GetGyroValues().x * dt;
+		//fy = sensorsService.GetGyroValues().y * dt;
+		//fz = sensorsService.GetGyroValues().z * dt;
+		//Matrix3i tempMatrix;
+		//tempMatrix.a = Vector3i(1,-fz,fy);
+		//tempMatrix.b = Vector3i(fz,1,-fx);
+		//tempMatrix.c = Vector3i(-fy,fx,1);
+		//rotationMatrix = rotationMatrix.operator *(tempMatrix);
+		//x +=  (((sensorsService.GetGyroValues().x)/adc))*dt;
+		//y +=  (((sensorsService.GetGyroValues().y)/adc))*dt;
+		//z +=  (((sensorsService.GetGyroValues().z)/adc))*dt;
+		
+		x += (float)sensorsService.GetGyroValues().x*((float)dt/1000000)/14.375; // Without any filter
+		
+		y += (float)sensorsService.GetGyroValues().y*((float)dt/1000000)/14.375; // Without any filter
+		
+		z += (float)sensorsService.GetGyroValues().z*((float)dt/1000000)/14.375; // Without any filter
+		
+		//double accXangle = getXangle();
+		//
+		//double accYangle = getYangle();
+		//
+		//compAngleX = (0.93*(compAngleX+(gyroXrate*(double)(micros()-timer)/1000000)))+(0.07*accXangle);
+		//compAngleY = (0.93*(compAngleY+(gyroYrate*(double)(micros()-timer)/1000000)))+(0.07*accYangle);
+		//
+		//
 		earthAngles.x = x;
 		earthAngles.y = y;
 		earthAngles.z = z;
-		//
-		Serial.println(currentMillis);
-		Serial.println(previousMillis);
-		Serial.println("@");
-		//Serial.println(fx);
-		//Serial.println(fy);
-		//Serial.println(fz);
-		//Serial.println(";");
 		previousMillis=currentMillis;
 	}
+	//void p(char *fmt, ... ){
+		//char tmp[32]; // resulting string limited to 128 chars
+		//va_list args;
+		//va_start (args, fmt );
+		//vsnprintf(tmp, 32, fmt, args);
+		//va_end (args);
+		//Serial.print(tmp);
+	//}
 	
-	Vector3<int> GetGyroValues()
+	Vector3<float> GetGyroValues()
 	{
 		return sensorsService.GetGyroValues();
 	}
@@ -84,7 +98,7 @@ class Stabilizator
 	
 	Vector3l GetOrientation()
 	{
-		return earthAngles;		
+		return earthAngles;
 	}
 	
 	float GetPitch()
@@ -99,6 +113,7 @@ class Stabilizator
 	{
 		return z;
 	}
+	
 	private:
 	long previousMillis;
 	SernsorsService sensorsService;

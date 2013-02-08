@@ -26,8 +26,8 @@ namespace GDCopter.Client
         public CommunicationService()
         {
             _serialPort.PortName = "COM3";
-            _serialPort.BaudRate = 9600;
-
+            _serialPort.BaudRate = 115200;
+            
             _serialPort.DataReceived += _serialPort_DataReceived;
 
             _serialPort.Open();
@@ -38,7 +38,6 @@ namespace GDCopter.Client
         {
             ParseData(_serialPort.ReadLine());
             _previuosTime = DateTime.Now;
-
 
         }
 

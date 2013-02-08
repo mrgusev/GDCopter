@@ -9,7 +9,7 @@ class ClientService
 	public:
 	void Initialize(Stabilizator* stabilizator )
 	{
-		Serial.begin(9600);
+		Serial.begin(115200);
 		_stabilizator = stabilizator;		
 	}
 	
@@ -25,7 +25,7 @@ class ClientService
 	
 	void SendSensorsValues()
 	{
-		Vector3<int> gyroVec = _stabilizator->GetGyroValues();
+		Vector3<float> gyroVec = _stabilizator->GetGyroValues();
 		Vector3<int> accelVec = _stabilizator->GetAccelValues();
 		Vector3<int> compassVec = _stabilizator->GetCompassValues();
 		Serial.print(gyroVec.x);
@@ -39,12 +39,6 @@ class ClientService
 		Serial.print(accelVec.y);
 		Serial.print("#");
 		Serial.print(accelVec.z);
-		Serial.print(";");
-		Serial.print(compassVec.x);
-		Serial.print("#");
-		Serial.print(compassVec.y);
-		Serial.print("#");
-		Serial.println(compassVec.z);		
 	}
 	private:
 	Stabilizator* _stabilizator;
