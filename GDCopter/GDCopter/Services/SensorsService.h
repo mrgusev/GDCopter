@@ -9,7 +9,6 @@
 #include "HMC5883L.h"
 #include <Wire.h>
 #include "vector3.h"
-
 class SernsorsService
 {
 	public:
@@ -24,8 +23,10 @@ class SernsorsService
 		mag.initialize();	
 		xGyroOffset = -37.61f;
 		yGyroOffset = 6.68f;
-		zGyroOffset = -14.30f;	
-		
+		zGyroOffset = -14.30f;
+		xAccelOffset = 500.0f;
+		yAccelOffset = -100.0f;
+		zAccelOffset = -650.0f;
 		//To add the definition for the magntometer and accel offsets
 		
 	}
@@ -34,19 +35,27 @@ class SernsorsService
 	{
 		accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);		
 		mag.getHeading(&mx, &my, &mz);
+		
+		gyroValues = Vector3f((float)gx-xGyroOffset,(float)gy-yGyroOffset,(float)gz-zGyroOffset);
+		accellValues = Vector3f((float)ax-xAccelOffset,(float)ay-yAccelOffset,(float)az-zAccelOffset);
+		compassValues = Vector3f(mx,my,mz);
+		
+		gyroValues = (gyroValues/14.375f)*DEG_TO_RAD;
+		accellValues/= 16384.f;
+
 	}
 	
 	Vector3<float> GetGyroValues()
 	{
-		return Vector3<float>((float)gx-xGyroOffset,(float)gy-yGyroOffset,(float)gz-zGyroOffset);
+		return gyroValues;
 	} 
 	Vector3<float> GetAccelValues()
 	{
-		return Vector3<float>((float)ax-xAccelOffset,(float)ay-yAccelOffset,(float)az-zAccelOffset);
+		return accellValues;
 	}
 	Vector3<float> GetCompassValues()
 	{
-		return Vector3<float>((float)mx-xCompassOffset,(float)my-yCompassOffset,(float)mz-zCompassOffset);
+		return compassValues;
 	}
 	
 	void SendGyroOffsets()
@@ -67,12 +76,16 @@ class SernsorsService
 	float xGyroOffset;
 	float yGyroOffset;
 	float zGyroOffset;
-	int xAccelOffset;
-	int yAccelOffset;
-	int zAccelOffset;
-	int xCompassOffset;
-	int yCompassOffset;
-	int zCompassOffset;
+	float xAccelOffset;
+	float yAccelOffset;
+	float zAccelOffset;
+	float xCompassOffset;
+	float yCompassOffset;
+	float zCompassOffset;
+	
+	Vector3f gyroValues;
+	Vector3f accellValues;
+	Vector3f compassValues;
 	
 	void CalibrateGyro()
 	{

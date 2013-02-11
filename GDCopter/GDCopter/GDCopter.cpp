@@ -5,8 +5,10 @@
 
 #include "Stabilizator.h"
 #include "ClientService.h"
+
 Stabilizator stabilizator;
 ClientService clientService;
+
 
 long previousMillis;
 void setup()
