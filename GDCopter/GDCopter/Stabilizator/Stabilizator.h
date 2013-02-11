@@ -42,8 +42,8 @@ class Stabilizator
 		//earthAngles = Vector3l(0,0,0);
 		planeAngles = Vector3i(1,1,1);
 		
-		filterGyroCoef=0.5;
-		filterAccelCoef=0.25;
+		filterGyroCoef=0.9;
+		filterAccelCoef=0.1;
 		filterCompasCoef=0.25;
 		
 		x=0;
@@ -73,15 +73,15 @@ class Stabilizator
 		//¬ычисл€ем косинусы углов между ос€ми инерционной и объектной систем
 		//¬ычисленные косинусы составл€ют первую и третью строки матрицы дл€ данной итерации
 		//Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
-		//Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
+		Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
 		//
 		//Ќаходим угловое приращение трем€ разными способами
 		Vector3f gyroAngularDisplacement = currentGyroValues * (float)dt/1000000.0f;
-		//Vector3f accelAngularDisplacement = RotationMatrix.c % (currentRotationMatrixThirdRow - RotationMatrix.c);
+		Vector3f accelAngularDisplacement = RotationMatrix.c % (currentRotationMatrixThirdRow - RotationMatrix.c);
 		//Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
 		//
 		//Ќаходим среднее между трем€ способами
-		Vector3f averageAngularDisplacement = gyroAngularDisplacement ;//* filterGyroCoef + accelAngularDisplacement * filterAccelCoef + compasAngularDisplacement * filterCompasCoef;
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  filterGyroCoef + accelAngularDisplacement * filterAccelCoef;// + compasAngularDisplacement * filterCompasCoef;
 		
 		//Ќаходим новую матрицу поворота
 		RotationMatrix.a += (RotationMatrix.a % averageAngularDisplacement);
