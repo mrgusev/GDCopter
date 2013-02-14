@@ -66,30 +66,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApplicationState.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Models\ApplicationStatusModel.cs" />
-    <Compile Include="Models\ConfigurationModel.cs" />
+    <Compile Include="ControllerCommands.cs" />
+    <Compile Include="Models\AllSensorsDataModel.cs" />
+    <Compile Include="Models\ApplicationStateModel.cs" />
     <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\OrientationModel.cs" />
-    <Compile Include="Models\ParametersModel.cs" />
-    <Compile Include="Models\RotorTestModel.cs" />
-    <Compile Include="Models\SensorsDataModel.cs" />
     <Compile Include="Models\TerminalModel.cs" />
-    <Compile Include="Services\ConfiguartionService.cs" />
-    <Compile Include="Services\StatisticService.cs" />
+    <Compile Include="Services\AllSensorsDataService.cs" />
+    <Compile Include="Services\OrientationService.cs" />
+    <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\TerminalService.cs" />
-    <Compile Include="Services\TestService.cs" />
-    <Compile Include="StatisticPoint.cs" />
-    <Compile Include="Views\ChartsDataView.xaml.cs">
-      <DependentUpon>ChartsDataView.xaml</DependentUpon>
+    <Compile Include="Models\StatisticPoint.cs" />
+    <Compile Include="Views\AllSensorsDataView.xaml.cs">
+      <DependentUpon>AllSensorsDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionView.xaml.cs">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ControlView.xaml.cs">
-      <DependentUpon>ControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OrientationView.xaml.cs">
       <DependentUpon>OrientationView.xaml</DependentUpon>
@@ -105,20 +101,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunicationService.cs" />
+    <Compile Include="CommunicationModule.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ChartsDataView.xaml">
+    <Page Include="Views\AllSensorsDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConnectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

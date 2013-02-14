@@ -24,18 +24,42 @@ namespace GDCopter.Client.Views
         public TerminalView()
         {
             InitializeComponent();
+            recieveTextBox.TextChanged += RecieveTextBoxTextChanged;
+        }
+
+        private void RecieveTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            recieveTextBox.ScrollToEnd();
         }
 
         private void SendButtonClick(object sender, RoutedEventArgs e)
         {
             var terminalModel = (TerminalModel)DataContext;
             terminalModel.Message = inputTextBox.Text;
+            inputTextBox.Text = "";
+            sendTextBox.ScrollToEnd();
         }
 
-        private void BeginTRansmittingButtonClick(object sender, RoutedEventArgs e)
+        private void RunButtonClick(object sender, RoutedEventArgs e)
         {
             var terminalModel = (TerminalModel)DataContext;
-            terminalModel.IsTransmitting = !terminalModel.IsTransmitting;
+            terminalModel.IsRunning = !terminalModel.IsRunning;
+        }
+
+        private void InputTextBoxKeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                SendButtonClick(null,null);
+            }
+            //if(e.Key == Key.Up)
+            //{
+            //    var model = ((TerminalModel) DataContext);
+            //    var elems = model.SentMessages.Take(model.SentMessages.Count - _sendHistoryUpCount);
+            //    if (elems.Count() > 0)
+            //        sendTextBox.Text = elems.Last().Key;
+            //    _sendHistoryUpCount++;
+            //}
         }
     }
 }

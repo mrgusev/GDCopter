@@ -3,9 +3,84 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:charting="http://research.microsoft.com/DynamicDataDisplay/1.0"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="537.969" d:DesignWidth="598.873">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="166"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Top" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="167*" MinWidth="160"/>
+                <ColumnDefinition Width="166*" MinWidth="160"/>
+                <ColumnDefinition Width="167*" MinWidth="160"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0" Margin="0,0"  >
+                <Ellipse Stretch="Fill" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FF89CC6E" Width="150" Height="150"/>
+                <Path Stretch="Fill" x:Name="pitchArrow" StrokeThickness="1" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FFFF7600" Data="F1 M 180.491,214.822L 255.491,207.846L 255.491,221.798L 180.491,214.822 Z M 330.608,214.822L 255.608,221.798L 255.608,207.846L 330.608,214.822 Z " Width="150" Height="14" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="{Binding Pitch}"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="0" >
+                <Ellipse Stretch="Fill" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FF89CC6E" Width="150" Height="150"/>
+                <Path Stretch="Fill" x:Name="rollArrow" StrokeThickness="1" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FFFF7600" Data="F1 M 180.491,214.822L 255.491,207.846L 255.491,221.798L 180.491,214.822 Z M 330.608,214.822L 255.608,221.798L 255.608,207.846L 330.608,214.822 Z " Width="150" Height="14" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="{Binding Yaw}"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="0"   >
+                <Ellipse Stretch="Fill" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FF89CC6E" Width="150" Height="150"/>
+                <Path Stretch="Fill" x:Name="yawArrow" StrokeThickness="1" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FFFF7600" Data="F1 M 180.491,214.822L 255.491,207.846L 255.491,221.798L 180.491,214.822 Z M 330.608,214.822L 255.608,221.798L 255.608,207.846L 330.608,214.822 Z " Width="150" Height="14" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="{Binding Roll}"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Grid>
+            <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Pitch" VerticalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Yaw" VerticalAlignment="Center" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Roll" VerticalAlignment="Center" Grid.Column="2"/>
+
+        </Grid>
+        <Button x:Name="runButton" Content="{Binding StatusAction}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="20" Margin="0,0,0,10" Click="RunButtonClick"/>
+        <Grid Grid.Row="2">
+            <charting:ChartPlotter Grid.Row="0" x:Name="plotter">
+                <charting:ChartPlotter.HorizontalAxis>
+                    <charting:HorizontalDateTimeAxis x:Name="dateAxis1"/>
+                </charting:ChartPlotter.HorizontalAxis>
+                <charting:ChartPlotter.VerticalAxis>
+                    <charting:VerticalIntegerAxis Name="countAxis"/>
+                </charting:ChartPlotter.VerticalAxis>
+                <charting:LineGraph x:Name="linegraph1" Stroke="DarkGreen"/>
+                <charting:LineGraph x:Name="linegraph2" Stroke="CornflowerBlue"/>
+                <charting:LineGraph x:Name="linegraph3" Stroke="Crimson"/>
+                <charting:Header FontFamily="Arial"/>
+            </charting:ChartPlotter>
+        </Grid>
     </Grid>
+
 </UserControl>

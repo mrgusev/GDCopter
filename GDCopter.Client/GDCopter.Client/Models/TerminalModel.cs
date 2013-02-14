@@ -13,7 +13,6 @@ namespace GDCopter.Client.Models
         private string _receiveText;
         private string _sentText;
         private string _message;
-        private bool _isTransmitting = false;
 
         public ObservableCollection<KeyValuePair<string, DateTime>> RecievedMessages { get; set; }
 
@@ -49,16 +48,6 @@ namespace GDCopter.Client.Models
             }
         }
 
-        public bool IsTransmitting
-        {
-            get { return _isTransmitting; }
-            set
-            {
-                _isTransmitting = value;
-                OnPropertyChanged("IsTransmitting");
-            }
-        }
-
         public TerminalModel()
         {
             RecievedMessages = new ObservableCollection<KeyValuePair<string, DateTime>>();
@@ -74,7 +63,13 @@ namespace GDCopter.Client.Models
 
         private void RecievedCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ReceiveText += ((KeyValuePair<string, DateTime>)e.NewItems[0]).Key;
+            string temp = "";
+            foreach (var item in RecievedMessages.Skip(RecievedMessages.Count-100))
+            {
+                temp += item.Key;
+            }
+            ReceiveText = temp;
+
         }
 
     }

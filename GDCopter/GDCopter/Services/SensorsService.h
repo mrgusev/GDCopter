@@ -9,7 +9,7 @@
 #include "HMC5883L.h"
 #include <Wire.h>
 #include "vector3.h"
-class SernsorsService
+class SensorsService
 {
 	public:
 
