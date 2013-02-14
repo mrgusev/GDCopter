@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GDCopter.Client.Models
+﻿namespace GDCopter.Client.Models
 {
     public class ConnectionModel : ModelBase
     {
         private string _port;
 
         private int _baudRate;
-
-        private bool _isOpen;
 
         public string Port
         {
@@ -35,14 +26,6 @@ namespace GDCopter.Client.Models
             }
         }
 
-        public bool IsOpen
-        {
-            get { return _isOpen; }
-            set
-            {
-                _isOpen = value;
-                OnPropertyChanged("IsOpen");
-            }
-        }
+ 
     }
 }

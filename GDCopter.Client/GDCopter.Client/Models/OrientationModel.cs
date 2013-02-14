@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,11 @@ namespace GDCopter.Client.Models
         private double _roll;
 
         private double _altitude;
+
+        public OrientationModel()
+        {
+            OrientationValues = new ObservableCollection<StatisticPoint>();
+        }
 
         public double Yaw
         {
@@ -56,5 +62,7 @@ namespace GDCopter.Client.Models
                 OnPropertyChanged("Altitude");
             }
         }
+
+        public ObservableCollection<StatisticPoint> OrientationValues { get; private set; }
     }
 }

@@ -25,10 +25,7 @@ namespace GDCopter.Client.Views
         public ConnectionView()
         {
             InitializeComponent();
-            foreach (var item in SerialPort.GetPortNames())
-            {
-                portsComboBox.Items.Add(item);
-            }
+           
             baudrateComboBox.Items.Add(4800);
             baudrateComboBox.Items.Add(9600);
             baudrateComboBox.Items.Add(14400);
@@ -36,12 +33,53 @@ namespace GDCopter.Client.Views
             baudrateComboBox.Items.Add(38400);
             baudrateComboBox.Items.Add(57600);
             baudrateComboBox.Items.Add(115200);
+            RefreshPortNames();
+            
+            DataContextChanged += ConnectionViewDataContextChanged;
+        }
+
+        private void ConnectionViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var model = (ConnectionModel)DataContext;
+            model.PropertyChanged += ModelPropertyChanged;
+            
+        }
+
+        private void ModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "IsRunning")
+            {
+                var model = (ConnectionModel)DataContext;
+                connectButton.Content = model.IsRunning ? "Disconnect" : "Connect";
+                portStackPanel.IsEnabled = !model.IsRunning;
+                baudrateComboBox.IsEnabled = !model.IsRunning;
+            }
+        }
+
+        public void RefreshPortNames()
+        {
+            portsComboBox.Items.Clear();
+            foreach (var item in SerialPort.GetPortNames())
+            {
+                portsComboBox.Items.Add(item);
+            }
+            portsComboBox.Items.Refresh();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var model = (ConnectionModel) DataContext;
-            model.IsOpen = !model.IsOpen;
+            var model = (ConnectionModel)DataContext;
+            model.IsRunning = !model.IsRunning;
+        }
+
+        private void portsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void portsComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+            RefreshPortNames();
         }
     }
 }

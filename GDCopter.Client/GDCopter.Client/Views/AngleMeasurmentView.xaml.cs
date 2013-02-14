@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace GDCopter.Client.Views
 {
     /// <summary>
-    /// Interaction logic for ControlView.xaml
+    /// Interaction logic for AngleMeasurmentView.xaml
     /// </summary>
-    public partial class ControlView : UserControl
+    public partial class AngleMeasurmentView : UserControl
     {
-        public ControlView()
+        public AngleMeasurmentView()
         {
             InitializeComponent();
         }

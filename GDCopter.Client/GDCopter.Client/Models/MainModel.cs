@@ -10,37 +10,72 @@ namespace GDCopter.Client.Models
 {
     class MainModel : ModelBase
     {
+        private readonly List<ServiceBase> _services; 
         public MainModel()
         {
-            ConnectionModel = new ConnectionModel();
-            ConfigurationModel = new ConfigurationModel();
-            SensorsDataModel = new SensorsDataModel();
+            ConnectionModel = new ConnectionModel{BaudRate = 115200, Port = "COM3"};
             OrientationModel = new OrientationModel();
-            ApplicationStatusModel = new ApplicationStatusModel{IsControl = true};
-            CommunicationService = new CommunicationService(ConnectionModel);
-            TestService = new TestService();
+            AllSensorsDataModel = new AllSensorsDataModel();
             TerminalModel = new TerminalModel();
-            TerminalService = new TerminalService(CommunicationService, TerminalModel);
+            ApplicationStatusModel = new ApplicationStateModel{IsTerminal = true};
+            ApplicationStatusModel.PropertyChanged += ApplicationStatusModelPropertyChanged;
+            CommunicationModule = new CommunicationModule(ConnectionModel);
+            TerminalService= new TerminalService(CommunicationModule, TerminalModel);
+            OrientationService  = new OrientationService(CommunicationModule, OrientationModel);
+            AllSensorsDataService = new AllSensorsDataService(CommunicationModule, AllSensorsDataModel);
+            _services= new List<ServiceBase>{TerminalService,OrientationService, AllSensorsDataService};
+            ConnectionModel.PropertyChanged += ConnectionModel_PropertyChanged;
         }
-        public CommunicationService CommunicationService { get; set; }
 
-        public TerminalService TerminalService { get; set; }
+        void ConnectionModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName=="IsRunning")
+            {
+                if(!ConnectionModel.IsRunning)
+                {
+                    _services.ForEach(s=>s.Stop());
+                }
+            }
+        }
 
-        public TestService TestService { get; set; }
-
-        public StatisticService StatisticService { get; set; }
 
         public ConnectionModel ConnectionModel { get; set; }
 
-        public SensorsDataModel SensorsDataModel { get; set; }
-
         public OrientationModel OrientationModel { get; set; }
 
-        public ConfigurationModel ConfigurationModel { get; set; }
+        public AllSensorsDataModel AllSensorsDataModel { get; set; }
 
-        public ApplicationStatusModel ApplicationStatusModel { get; set; }
+        public ApplicationStateModel ApplicationStatusModel { get; set; }
 
         public TerminalModel TerminalModel { get; set; }
 
+        public CommunicationModule CommunicationModule { get; set; }
+
+        public TerminalService TerminalService { get; set; }
+
+        public OrientationService OrientationService { get; set; }
+
+        public AllSensorsDataService AllSensorsDataService { get; set; }
+
+        private void ApplicationStatusModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _services.ForEach(p => p.Stop());
+
+            switch (ApplicationStatusModel.ApplicationState)
+            {
+                case ApplicationState.Terminal:
+                    break;
+                case ApplicationState.AllSensorsChart:
+                    break;
+                case ApplicationState.CompassChart:
+                    break;
+                case ApplicationState.OrientationChart:
+                    break;
+                case ApplicationState.Connection:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }
