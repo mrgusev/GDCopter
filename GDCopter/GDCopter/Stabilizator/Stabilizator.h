@@ -5,19 +5,17 @@
 *  Author: Kirill
 */
 
-#include "SensorsService.h"
 #include "matrix3.h"
 
 class Stabilizator
 {
 	private:
 	long previousMillis;
-	SernsorsService sensorsService;
+	SensorsService* _sensorsService;
 	Matrix3f RotationMatrix;
 	Vector3i planeAngles;
 	Vector3l earthAngles;
 	
-	int dt;
 	int fx;
 	int fy;
 	int fz;
@@ -32,9 +30,12 @@ class Stabilizator
 	float filterAccelCoef;
 	float filterCompasCoef;
 	
-	void Initialize()
+	int dt;
+	
+	void Initialize(SensorsService* sensorsService)
 	{
-		sensorsService.Innitialize();
+		_sensorsService = sensorsService;
+		_sensorsService->Innitialize();
 		previousMillis = 0;
 		RotationMatrix.a = Vector3f(1,0,0);
 		RotationMatrix.b = Vector3f(0,1,0);
@@ -42,7 +43,7 @@ class Stabilizator
 		//earthAngles = Vector3l(0,0,0);
 		planeAngles = Vector3i(1,1,1);
 		
-		filterGyroCoef=0.75;
+		filterGyroCoef=0.9;
 		filterAccelCoef=0.1;
 		filterCompasCoef=0.15;
 		
@@ -50,38 +51,32 @@ class Stabilizator
 		y=0;
 		z=0;
 	}
-	void UpdateSensorsData()
-	{
-		//sensorsService.SendGyroOffsets();
-		sensorsService.UpdateValues();
-	}
-
 	
 	void CalculateAngles()
 	{
 		unsigned long currentMillis = micros();
 		dt = currentMillis - previousMillis;
 		
-		Vector3<float> currentGyroValues = GetGyroValues();
-		Vector3<float> currentAccelValues = GetAccelValues();
-		Vector3<float> currentCompassValues = GetCompassValues();
+		Vector3<float> currentGyroValues = _sensorsService->GetGyroValues();
+		Vector3<float> currentAccelValues = _sensorsService->GetAccelValues();
+		Vector3<float> currentCompassValues = _sensorsService->GetCompassValues();
 		
 		//¬ычисл€ем длины векторов, дл€ нахождени€ косинусов углов между ними и ос€ми
 		float gravityVectorLength = currentAccelValues.length();
-		float magneticVectorLength = currentCompassValues.length();
+		//float magneticVectorLength = currentCompassValues.length();
 		
 		//¬ычисл€ем косинусы углов между ос€ми инерционной и объектной систем
 		//¬ычисленные косинусы составл€ют первую и третью строки матрицы дл€ данной итерации
-		Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
+		//Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
 		Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
 		//
 		//Ќаходим угловое приращение трем€ разными способами
 		Vector3f gyroAngularDisplacement = currentGyroValues * (float)dt/1000000.0f;
 		Vector3f accelAngularDisplacement = RotationMatrix.c % (currentRotationMatrixThirdRow - RotationMatrix.c);
-		Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
+	//	Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
 		//
 		//Ќаходим среднее между трем€ способами
-		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  filterGyroCoef + accelAngularDisplacement * filterAccelCoef + compasAngularDisplacement * filterCompasCoef;
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  filterGyroCoef + accelAngularDisplacement * filterAccelCoef;//; + compasAngularDisplacement * filterCompasCoef;
 		
 		//Ќаходим новую матрицу поворота
 		RotationMatrix.a += (RotationMatrix.a % averageAngularDisplacement);
@@ -138,19 +133,6 @@ class Stabilizator
 		//va_end (args);
 		//Serial.print(tmp);
 	//}
-	
-	Vector3<float> GetGyroValues()
-	{
-		return sensorsService.GetGyroValues();
-	}
-	Vector3<float> GetAccelValues()
-	{
-		return sensorsService.GetAccelValues();
-	}
-	Vector3<float> GetCompassValues()
-	{
-		return sensorsService.GetCompassValues();
-	}
 	
 	Vector3l GetOrientation()
 	{

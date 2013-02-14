@@ -57,10 +57,10 @@ namespace GDCopter.Client.Services
             File.WriteAllLines(filePath, history);
         }
 
-        public override void Stop()
-        {
-            base.Stop();
-            CommunicationModule.SendMessage(ControllerCommands.Stop);
-        }
+        //public override void Stop()
+        //{
+        //    base.Stop();
+        //    CommunicationModule.SendMessage(ControllerCommands.Stop);
+        //}
     }
 }

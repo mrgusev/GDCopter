@@ -21,7 +21,7 @@ namespace GDCopter.Client.Services
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (IsRunning)
+            if (IsRunning && CommunicationModule.LastMessage!=null)
             {
                 var values = ParseAllData(CommunicationModule.LastMessage);
                 var model = (OrientationModel)Model;
@@ -41,7 +41,7 @@ namespace GDCopter.Client.Services
             var values = message.Split('#');
             if (values.Count() == 3)
             {
-                result = new StatisticPoint(ParseValue(values[0]), ParseValue(values[1]), ParseValue(values[2]), now);
+                result = new StatisticPoint(ParseValue(values[0]) * 57.295, ParseValue(values[1]) * 57.295, ParseValue(values[2]) * 57.295, now);
             }
             return result;
         }

@@ -10,7 +10,7 @@ namespace GDCopter.Client
     {
         public static string Stop = "$stop";
         public static string AllSensorsData = "$sensors";
-        public static string Orientation = "$orienttion";
+        public static string Orientation = "$orientation";
         public static string CompassValues = "$compass";
     }
 

@@ -21,7 +21,7 @@ namespace GDCopter.Client.Services
         protected float ParseValue(string value)
         {
             float result;
-            if (float.TryParse(value.Replace(',', '.'), out result))
+            if (float.TryParse(value.Replace('.', ','), out result))
             {
                 return result;
             }

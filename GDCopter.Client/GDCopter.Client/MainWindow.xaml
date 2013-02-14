@@ -17,14 +17,17 @@
         </Grid.ColumnDefinitions>
         <StackPanel IsEnabled="{Binding ConnectionModel.IsRunning}" DataContext="{Binding DataContext, ElementName=window}" Grid.Column="0" HorizontalAlignment="Left" Width="119" Margin="10,10,0,0" Grid.RowSpan="2">
             <RadioButton Name="teminalCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="Terminal" IsChecked="{Binding IsTerminal, Mode=TwoWay}" Margin="0,0,0,10" Checked="RadioButton_Checked"/>
-            <RadioButton Name="allSensorsChartsCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="All sensors charts" IsChecked="{Binding IsAllSensorsData, Mode=TwoWay}" Margin="0,0,0,10" Checked="RadioButton_Checked"/>
+            <RadioButton Name="allSensorsDataCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="All sensors charts" IsChecked="{Binding IsAllSensorsData, Mode=TwoWay}" Margin="0,0,0,10" Checked="RadioButton_Checked"/>
             <RadioButton Name="orientationCheckbox" DataContext="{Binding ApplicationStatusModel}" Content="Orientation" IsChecked="{Binding IsOrientation, Mode=TwoWay}" Margin="0,0,0,10" Checked="RadioButton_Checked"/>
             <RadioButton x:Name="compassChartCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="Compass chart" IsChecked="{Binding IsCompassChart, Mode=TwoWay}" Margin="0,0,0,10" Checked="RadioButton_Checked"/>
         </StackPanel>
         <Grid Grid.Column="1" IsEnabled="{Binding ConnectionModel.IsRunning}">
             <Views:TerminalView  DataContext="{Binding TerminalModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=teminalCheckBox, Mode=TwoWay}"/>
+            <Views:OrientationView DataContext="{Binding OrientationModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=orientationCheckbox, Mode=TwoWay}" />
+            <Views:AllSensorsDataView DataContext="{Binding AllSensorsDataModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=allSensorsDataCheckBox, Mode=TwoWay}" />
         </Grid>
-            <Views:ConnectionView DataContext="{Binding ConnectionModel}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Margin="10,2,2,2"/>
+        <Views:ConnectionView DataContext="{Binding ConnectionModel}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Margin="10,2,2,2"/>
+
         <Rectangle Height="1" Stroke="Black" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
 
     </Grid>

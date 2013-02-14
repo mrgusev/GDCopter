@@ -24,28 +24,12 @@ namespace GDCopter.Client.Views
         public TerminalView()
         {
             InitializeComponent();
-            DataContextChanged += TerminalViewDataContextChanged;
             recieveTextBox.TextChanged += RecieveTextBoxTextChanged;
         }
 
         private void RecieveTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             recieveTextBox.ScrollToEnd();
-        }
-
-        private void TerminalViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var terminalModel = (TerminalModel)DataContext;
-            terminalModel.PropertyChanged += TerminalModelPropertyChanged;
-        }
-
-        private void TerminalModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName == "IsRunning")
-            {
-                stateButton.Content = ((TerminalModel)DataContext).IsRunning ? "Stop" : "Run";
-            }
-            //recieveTextBox.ScrollToEnd();
         }
 
         private void SendButtonClick(object sender, RoutedEventArgs e)
@@ -68,6 +52,14 @@ namespace GDCopter.Client.Views
             {
                 SendButtonClick(null,null);
             }
+            //if(e.Key == Key.Up)
+            //{
+            //    var model = ((TerminalModel) DataContext);
+            //    var elems = model.SentMessages.Take(model.SentMessages.Count - _sendHistoryUpCount);
+            //    if (elems.Count() > 0)
+            //        sendTextBox.Text = elems.Last().Key;
+            //    _sendHistoryUpCount++;
+            //}
         }
     }
 }

@@ -10,7 +10,7 @@
             <RowDefinition Height="0*"/>
             <RowDefinition Height="187*"/>
             <RowDefinition Height="84*"/>
-            <RowDefinition Height="55*"/>
+            <RowDefinition Height="55"/>
         </Grid.RowDefinitions>
         <TextBox Name="sendTextBox" Text="{Binding SentText, Mode=TwoWay}" Margin="0,32,0,0" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
         <TextBox IsEnabled="{Binding IsRunning}" Name="inputTextBox" Margin="0,0,80,16" Grid.Row="3" Height="18" VerticalAlignment="Bottom" KeyUp="InputTextBoxKeyUp"/>
@@ -19,7 +19,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="0,11,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Send history" VerticalAlignment="Top" Height="16" Width="66"/>
         <TextBlock HorizontalAlignment="Left" Margin="0,33,0,0" TextWrapping="Wrap" Text="Recieve history" Grid.Row="1" Height="16" VerticalAlignment="Top"/>
         <GridSplitter HorizontalAlignment="Stretch" Height="1" VerticalAlignment="Top" Background="#FFA2A2A2" Grid.Row="2"/>
-        <Button Name="stateButton" Content="Run" VerticalAlignment="Top" Grid.Row="1" Height="20" HorizontalAlignment="Left" Width="102" Click="RunButtonClick"/>
+        <Button Name="stateButton" Content="{Binding StatusAction}" VerticalAlignment="Top" Grid.Row="1" Height="20" HorizontalAlignment="Left" Width="102" Click="RunButtonClick"/>
         <Button Content="Save history to file" VerticalAlignment="Top" Grid.Row="1" Margin="113,0,0,0" HorizontalAlignment="Left" Width="114"/>
 
     </Grid>

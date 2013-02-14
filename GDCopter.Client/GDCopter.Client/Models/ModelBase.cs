@@ -11,6 +11,18 @@ namespace GDCopter.Client.Models
     {
         private bool _isRunning;
 
+        private string _status = "Run";
+
+        public string StatusAction
+        {
+            get { return _status; }
+            private set
+            {
+                _status = value;
+                OnPropertyChanged("StatusAction");
+            }
+        }
+
         public bool IsRunning
         {
             get { return _isRunning; }
@@ -19,6 +31,7 @@ namespace GDCopter.Client.Models
                 if (value != _isRunning)
                 {
                     _isRunning = value;
+                    StatusAction = value ? "Stop" : "Run";
                     OnPropertyChanged("IsRunning");
                 }
             }
@@ -26,7 +39,7 @@ namespace GDCopter.Client.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

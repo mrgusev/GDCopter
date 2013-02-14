@@ -81,8 +81,14 @@
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\TerminalService.cs" />
     <Compile Include="Models\StatisticPoint.cs" />
+    <Compile Include="Views\AllSensorsDataView.xaml.cs">
+      <DependentUpon>AllSensorsDataView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ConnectionView.xaml.cs">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OrientationView.xaml.cs">
+      <DependentUpon>OrientationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TerminalView.xaml.cs">
       <DependentUpon>TerminalView.xaml</DependentUpon>
@@ -100,7 +106,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AllSensorsDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ConnectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OrientationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

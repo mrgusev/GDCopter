@@ -22,7 +22,7 @@ namespace GDCopter.Client.Services
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (IsRunning)
+            if (IsRunning && CommunicationModule.LastMessage!=null)
             {
                 var message = CommunicationModule.LastMessage;
                 var newValues = ParseAllData(message);
