@@ -12,23 +12,48 @@ class Stabilizator
 	private:
 	long previousMillis;
 	SensorsService* _sensorsService;
-	Matrix3f RotationMatrix;
-	Vector3i planeAngles;
+	Matrix3f rotationMatrix;
 	Vector3l earthAngles;
 	
-	int fx;
-	int fy;
-	int fz;
+	float currentPitch;
+	float currentYaw;
+	float currentRoll;
+	float currentAltitude;
 	
-	float x;
-	float y;
-	float z;
+	float previousPitch;
+	float previousYaw;
+	float previousRoll;
+	float previousAltitude;
+	
+	float firstMotorSpeedSq;
+	float secondMotorSpeedSq;
+	float thirdRotorSpeedSq;
+	float fourthRotorSpeedSq;
 	
 	public:
 	
-	float filterGyroCoef;
-	float filterAccelCoef;
-	float filterCompasCoef;
+	float FilterGyroCoef;
+	float FilterAccelCoef;
+	float FilterCompasCoef;
+	
+	float ThrustDerivativeCoef;
+	float PitchDerivativeCoef;
+	float RollDerivativeCoef;
+	float YawDerivativeCoef;
+	float ThrustProportionalCoef;
+	float PitchProportionalCoef;
+	float RollProportionalCoef;
+	float YawProportionalCoef;
+	
+	float QuadInertiaX;
+	float QuadInertiaY;
+	float QuadInertiaZ;
+	
+	float RotorLiftConstant;
+	float RotorDragConstant;
+	float QuadRadius;
+	
+	float QuadMass;
 	
 	int dt;
 	
@@ -37,19 +62,18 @@ class Stabilizator
 		_sensorsService = sensorsService;
 		_sensorsService->Innitialize();
 		previousMillis = 0;
-		RotationMatrix.a = Vector3f(1,0,0);
-		RotationMatrix.b = Vector3f(0,1,0);
-		RotationMatrix.c = Vector3f(0,0,1);
+		rotationMatrix.a = Vector3f(1,0,0);
+		rotationMatrix.b = Vector3f(0,1,0);
+		rotationMatrix.c = Vector3f(0,0,1);
 		//earthAngles = Vector3l(0,0,0);
-		planeAngles = Vector3i(1,1,1);
 		
-		filterGyroCoef=0.9;
-		filterAccelCoef=0.1;
-		filterCompasCoef=0.15;
+		FilterGyroCoef=0.9;
+		FilterAccelCoef=0.1;
+		FilterCompasCoef=0.15;
 		
-		x=0;
-		y=0;
-		z=0;
+		currentPitch=0;
+		currentYaw=0;
+		currentRoll=0;
 	}
 	
 	void CalculateAngles()
@@ -72,23 +96,23 @@ class Stabilizator
 		//
 		//Ќаходим угловое приращение трем€ разными способами
 		Vector3f gyroAngularDisplacement = currentGyroValues * (float)dt/1000000.0f;
-		Vector3f accelAngularDisplacement = RotationMatrix.c % (currentRotationMatrixThirdRow - RotationMatrix.c);
+		Vector3f accelAngularDisplacement = rotationMatrix.c % (currentRotationMatrixThirdRow - rotationMatrix.c);
 	//	Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
 		//
 		//Ќаходим среднее между трем€ способами
-		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  filterGyroCoef + accelAngularDisplacement * filterAccelCoef;//; + compasAngularDisplacement * filterCompasCoef;
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  FilterGyroCoef + accelAngularDisplacement * FilterAccelCoef;//; + compasAngularDisplacement * filterCompasCoef;
 		
 		//Ќаходим новую матрицу поворота
-		RotationMatrix.a += (RotationMatrix.a % averageAngularDisplacement);
-		RotationMatrix.b += (RotationMatrix.b % averageAngularDisplacement);
-		RotationMatrix.c += (RotationMatrix.c % averageAngularDisplacement);
-		float error = (RotationMatrix.a * RotationMatrix.c) / 2;
-		Vector3f rotationMatrixOldA = RotationMatrix.a;
-		RotationMatrix.a -= RotationMatrix.c * error;
-		RotationMatrix.a.normalize();
-		RotationMatrix.c -= rotationMatrixOldA * error;
-		RotationMatrix.c.normalize();
-		RotationMatrix.b = RotationMatrix.a % RotationMatrix.c;
+		rotationMatrix.a += (rotationMatrix.a % averageAngularDisplacement);
+		rotationMatrix.b += (rotationMatrix.b % averageAngularDisplacement);
+		rotationMatrix.c += (rotationMatrix.c % averageAngularDisplacement);
+		float error = (rotationMatrix.a * rotationMatrix.c) / 2;
+		Vector3f rotationMatrixOldA = rotationMatrix.a;
+		rotationMatrix.a -= rotationMatrix.c * error;
+		rotationMatrix.a.normalize();
+		rotationMatrix.c -= rotationMatrixOldA * error;
+		rotationMatrix.c.normalize();
+		rotationMatrix.b = rotationMatrix.a % rotationMatrix.c;
 		
 		//fx = sensorsService.GetGyroValues().x * dt;
 		//fy = sensorsService.GetGyroValues().y * dt;
@@ -108,9 +132,12 @@ class Stabilizator
 		//
 		//z += averageAngularDisplacement.z;//(float)sensorsService.GetGyroValues().z*((float)dt/1000000)/14.375; // Without any filter
 		//
-		x = -asin(RotationMatrix.c.y);
-		y= atan2(-RotationMatrix.c.x, RotationMatrix.c.z);
-		z = atan2(-RotationMatrix.a.y, RotationMatrix.b.y);
+		previousPitch = currentPitch;
+		currentPitch = -asin(rotationMatrix.c.y);
+		previousYaw = currentYaw;
+		currentYaw= atan2(-rotationMatrix.c.x, rotationMatrix.c.z);
+		previousRoll = currentRoll;
+		currentRoll = atan2(-rotationMatrix.a.y, rotationMatrix.b.y);
 		
 		//double accXangle = getXangle();
 		//
@@ -120,9 +147,9 @@ class Stabilizator
 		//compAngleY = (0.93*(compAngleY+(gyroYrate*(double)(micros()-timer)/1000000)))+(0.07*accYangle);
 		//
 		//
-		earthAngles.x = x;
-		earthAngles.y = y;
-		earthAngles.z = z;
+		earthAngles.x = currentPitch;
+		earthAngles.y = currentYaw;
+		earthAngles.z = currentRoll;
 		previousMillis=currentMillis;
 	}
 	//void p(char *fmt, ... ){
@@ -134,6 +161,28 @@ class Stabilizator
 		//Serial.print(tmp);
 	//}
 	
+	void CalculateMotorsSpeeds()
+	{
+		float totalThrust = (9.8f + ThrustDerivativeCoef * (previousAltitude - currentAltitude) / dt - ThrustProportionalCoef * currentAltitude) * QuadMass / rotationMatrix.c.z;
+		float rollTorque = (ThrustDerivativeCoef * (previousRoll - currentRoll) / dt - ThrustProportionalCoef * currentRoll) * QuadInertiaX;
+		float pitchTorque = (ThrustDerivativeCoef * (previousPitch - currentPitch) / dt - ThrustProportionalCoef * currentPitch) * QuadInertiaY;
+		float yawTorque = (ThrustDerivativeCoef * (previousYaw - currentYaw) / dt - ThrustProportionalCoef * currentYaw) * QuadInertiaZ;
+		
+		float thrustAdditive = totalThrust / 4 / RotorLiftConstant;
+		float pitchAdditive = pitchTorque / (2 * RotorLiftConstant * QuadRadius);
+		float rollAdditive = rollTorque / (2 * RotorLiftConstant * QuadRadius);
+		float yawAdditive = yawTorque / 4 / RotorDragConstant;
+		
+		//it is necessary to add the limitations for the values of the
+		//squared rotors' speeds (e. g. not less than zero) but it is
+		//supposed to be done in the future, while linearizing the
+		//dependency between the PWM value and a rotor's squared speed (just speed)
+		firstMotorSpeedSq = thrustAdditive - pitchAdditive - yawAdditive;
+		secondMotorSpeedSq = thrustAdditive - rollAdditive + yawAdditive;
+		thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
+		fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive; 
+	}
+	
 	Vector3l GetOrientation()
 	{
 		return earthAngles;
@@ -141,14 +190,16 @@ class Stabilizator
 	
 	float GetPitch()
 	{
-		return x;
+		return currentPitch;
 	}
+	
 	float GetYaw()
 	{
-		return y;
+		return currentYaw;
 	}
+	
 	float GetRoll()
 	{
-		return z;
+		return currentRoll;
 	}
 };
