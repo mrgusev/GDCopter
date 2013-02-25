@@ -60,16 +60,21 @@ class Stabilizator
 	void Initialize(SensorsService* sensorsService)
 	{
 		_sensorsService = sensorsService;
-		_sensorsService->Innitialize();
 		previousMillis = 0;
 		rotationMatrix.a = Vector3f(1,0,0);
 		rotationMatrix.b = Vector3f(0,1,0);
 		rotationMatrix.c = Vector3f(0,0,1);
 		//earthAngles = Vector3l(0,0,0);
 		
+<<<<<<< HEAD
 		FilterGyroCoef=0.9;
 		FilterAccelCoef=0.1;
 		FilterCompasCoef=0.15;
+=======
+		filterGyroCoef=0.9;
+		filterAccelCoef=0.07;
+		filterCompasCoef=0.03;
+>>>>>>> changed the messages parsing part. added rotor service and controller. added rotor view to the client application.
 		
 		currentPitch=0;
 		currentYaw=0;
@@ -87,20 +92,28 @@ class Stabilizator
 		
 		//¬ычисл€ем длины векторов, дл€ нахождени€ косинусов углов между ними и ос€ми
 		float gravityVectorLength = currentAccelValues.length();
-		//float magneticVectorLength = currentCompassValues.length();
+		float magneticVectorLength = currentCompassValues.length();
 		
 		//¬ычисл€ем косинусы углов между ос€ми инерционной и объектной систем
 		//¬ычисленные косинусы составл€ют первую и третью строки матрицы дл€ данной итерации
-		//Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
+		Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
 		Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
 		//
 		//Ќаходим угловое приращение трем€ разными способами
 		Vector3f gyroAngularDisplacement = currentGyroValues * (float)dt/1000000.0f;
+<<<<<<< HEAD
 		Vector3f accelAngularDisplacement = rotationMatrix.c % (currentRotationMatrixThirdRow - rotationMatrix.c);
 	//	Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
 		//
 		//Ќаходим среднее между трем€ способами
 		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  FilterGyroCoef + accelAngularDisplacement * FilterAccelCoef;//; + compasAngularDisplacement * filterCompasCoef;
+=======
+		Vector3f accelAngularDisplacement = RotationMatrix.c % (currentRotationMatrixThirdRow - RotationMatrix.c);
+		Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
+		//
+		//Ќаходим среднее между трем€ способами
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  filterGyroCoef + accelAngularDisplacement * filterAccelCoef + compasAngularDisplacement * filterCompasCoef;
+>>>>>>> changed the messages parsing part. added rotor service and controller. added rotor view to the client application.
 		
 		//Ќаходим новую матрицу поворота
 		rotationMatrix.a += (rotationMatrix.a % averageAngularDisplacement);
@@ -114,6 +127,7 @@ class Stabilizator
 		rotationMatrix.c.normalize();
 		rotationMatrix.b = rotationMatrix.a % rotationMatrix.c;
 		
+<<<<<<< HEAD
 		//fx = sensorsService.GetGyroValues().x * dt;
 		//fy = sensorsService.GetGyroValues().y * dt;
 		//fz = sensorsService.GetGyroValues().z * dt;
@@ -150,6 +164,15 @@ class Stabilizator
 		earthAngles.x = currentPitch;
 		earthAngles.y = currentYaw;
 		earthAngles.z = currentRoll;
+=======
+		x = -asin(RotationMatrix.c.y);
+		y= atan2(-RotationMatrix.c.x, RotationMatrix.c.z);
+		z = atan2(-RotationMatrix.a.y, RotationMatrix.b.y);
+		
+		earthAngles.x = x;
+		earthAngles.y = y;
+		earthAngles.z = z;
+>>>>>>> changed the messages parsing part. added rotor service and controller. added rotor view to the client application.
 		previousMillis=currentMillis;
 	}
 	//void p(char *fmt, ... ){

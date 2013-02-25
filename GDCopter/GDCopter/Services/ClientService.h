@@ -17,7 +17,6 @@ class ClientService
 		_stabilizator = stabilizator;
 		_sensorsService = sensorsService;
 		_controller = controller;
-		_previousMillis = 0;
 		SendData=&ClientService::StopSend;
 		_timerCount = 0;
 		lastMessage = "";
@@ -25,16 +24,13 @@ class ClientService
 	
 	void Update()
 	{
-		long currentMillis = millis();
-		_dt = currentMillis - _previousMillis;
-		_timerCount += _dt;
+		_timerCount += dt;
 		UpdateClientCommand();
 		if(_timerCount >= 50)
 		{
 			(this->*SendData)();
 			_timerCount = 0;
 		}
-		_previousMillis = currentMillis;
 	}
 	
 
@@ -42,10 +38,6 @@ class ClientService
 
 
 	private:
-	
-	long _previousMillis;
-	
-	int _dt;
 	
 	int _timerCount;
 	
@@ -161,7 +153,7 @@ class ClientService
 	}
 
 	void SendDelay(){
-		Serial.println(_dt);
+		Serial.println(dt);
 	}
 void StopSend(){}
 
