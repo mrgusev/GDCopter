@@ -1,45 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using GDCopter.Client.Models;
 
 namespace GDCopter.Client.Services
 {
-    public class AllSensorsDataService : ServiceBase
+    public class CompassDataService : ServiceBase
     {
         private readonly DispatcherTimer _timer = new DispatcherTimer();
 
-        public AllSensorsDataService(CommunicationModule communicationModule, AllSensorsDataModel dataModel)
-            : base(communicationModule, dataModel)
+        public CompassDataService(CommunicationModule communicationModule, CompassDataModel model)
+            : base(communicationModule, model)
         {
-            _timer.Interval = TimeSpan.FromMilliseconds(50);
+            _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += TimerTick;
         }
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (IsRunning && CommunicationModule.LastMessage!=null)
+            if (IsRunning && CommunicationModule.LastMessage != null)
             {
                 var message = CommunicationModule.LastMessage;
                 var newValues = ParseAllData(message);
-                var dataModel = (AllSensorsDataModel)Model;
-                dataModel.GyroValues.Add(newValues[0]);
-                dataModel.AccelValues.Add(newValues[1]);
-                dataModel.CompassValues.Add(newValues[2]);
-                if (dataModel.GyroValues.Count > 50)
-                    dataModel.GyroValues.RemoveAt(0);
-                if (dataModel.AccelValues.Count > 50)
-                    dataModel.AccelValues.RemoveAt(0);
-                if (dataModel.CompassValues.Count > 50)
-                    dataModel.CompassValues.RemoveAt(0);
+                var dataModel = (CompassDataModel)Model;
+                if (dataModel.IsXY)
+                {
+                    dataModel.Points.Add(new Point(newValues[2].X, newValues[2].Y));
+                } 
+                if (dataModel.IsXZ)
+                {
+                    dataModel.Points.Add(new Point(newValues[2].X, newValues[2].Z));
+                }
+                if (dataModel.IsYZ)
+                {
+                    dataModel.Points.Add(new Point(newValues[2].Y, newValues[2].Z));
+                }
+                if (dataModel.Points.Count > 150)
+                    dataModel.Points.RemoveAt(0);
                 dataModel.Update();
             }
         }
-
         public override void Run()
         {
             base.Run();
@@ -57,7 +61,7 @@ namespace GDCopter.Client.Services
         private StatisticPoint[] ParseAllData(string message)
         {
             var now = DateTime.Now;
-            var result = new []{new StatisticPoint(), new StatisticPoint(),new StatisticPoint()  };
+            var result = new[] { new StatisticPoint(), new StatisticPoint(), new StatisticPoint() };
             var sensors = message.Split(';');
             if (sensors.Count() == 3)
             {

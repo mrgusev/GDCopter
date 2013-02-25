@@ -15,6 +15,7 @@
 extern "C"{
 #endif
 
+#define F_CPU 16000000
 #define HIGH 0x1
 #define LOW  0x0
 

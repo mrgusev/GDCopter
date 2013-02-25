@@ -7,12 +7,14 @@
         private bool _isConnection;
 
         private bool _isTerminal;
-        
+
         private bool _isCompassChart;
 
         private bool _orientationChart;
 
         private ApplicationState _applicationState;
+
+        private bool _isRotors;
 
         public bool IsOrientationChart
         {
@@ -78,6 +80,20 @@
                 if (value)
                 {
                     ApplicationState = ApplicationState.Connection;
+                }
+            }
+        }
+
+        public bool IsRotors
+        {
+            get { return _isRotors; }
+            set
+            {
+                _isRotors = value;
+                OnPropertyChanged("IsRotors");
+                if (value)
+                {
+                    ApplicationState = ApplicationState.Rototrs;
                 }
             }
         }

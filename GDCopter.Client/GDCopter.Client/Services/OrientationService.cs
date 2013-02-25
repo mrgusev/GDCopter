@@ -8,7 +8,7 @@ using GDCopter.Client.Models;
 
 namespace GDCopter.Client.Services
 {
-    class OrientationService : ServiceBase
+    public class OrientationService : ServiceBase
     {
         private readonly DispatcherTimer _timer = new DispatcherTimer();
 
@@ -53,7 +53,7 @@ namespace GDCopter.Client.Services
             _timer.Start();
         }
 
-        public void Stop()
+        public override void Stop()
         {
             base.Stop();
             CommunicationModule.SendMessage(ControllerCommands.Stop);

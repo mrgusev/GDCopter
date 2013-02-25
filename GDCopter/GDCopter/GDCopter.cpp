@@ -4,18 +4,26 @@
 // for both classes must be in the include path of your project
 
 #include "SensorsService.h"
+#include "RotorService.h"
 #include "Stabilizator.h"
+#include "CommandParser.h"
+#include "Controller.h"
 #include "ClientService.h"
 
 Stabilizator stabilizator;
 ClientService clientService;
+Controller controller;
+RotorService rotorService;
 SensorsService sensorsService;
 
 long previousMillis;
 void setup()
 {
+	sensorsService.Innitialize();
+	rotorService.Initialize();
 	stabilizator.Initialize(&sensorsService);
-	clientService.Initialize(&stabilizator,&sensorsService);
+	controller.Initialize(&rotorService);
+	clientService.Initialize(&stabilizator,&sensorsService,&controller);
 	pinMode(13,OUTPUT);
 }
 
@@ -25,4 +33,5 @@ void loop()
 	sensorsService.UpdateValues();
 	stabilizator.CalculateAngles();
 	clientService.Update();
+	controller.Update();
 }

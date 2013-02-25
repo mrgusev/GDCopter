@@ -8,18 +8,33 @@ class ClientService
 {
 	public:
 	
-	void Initialize(Stabilizator* stabilizator, SensorsService * sensorsService)
+	String lastMessage;
+	
+	void Initialize(Stabilizator* stabilizator, SensorsService* sensorsService, Controller* controller)
 	{
-		Serial.begin(115200);
+		Serial.begin(57600);
+		Serial.setTimeout(10);
 		_stabilizator = stabilizator;
 		_sensorsService = sensorsService;
+		_controller = controller;
+		_previousMillis = 0;
 		SendData=&ClientService::StopSend;
+		_timerCount = 0;
+		lastMessage = "";
 	}
 	
 	void Update()
 	{
+		long currentMillis = millis();
+		_dt = currentMillis - _previousMillis;
+		_timerCount += _dt;
 		UpdateClientCommand();
-		(this->*SendData)();
+		if(_timerCount >= 50)
+		{
+			(this->*SendData)();
+			_timerCount = 0;
+		}
+		_previousMillis = currentMillis;
 	}
 	
 
@@ -28,68 +43,75 @@ class ClientService
 
 	private:
 	
+	long _previousMillis;
+	
+	int _dt;
+	
+	int _timerCount;
+	
 	void (ClientService::*SendData)();
 	
 	Stabilizator* _stabilizator;
 	
 	SensorsService* _sensorsService;
 	
+	Controller* _controller;
 
 	void UpdateClientCommand()
 	{
 		if(Serial.available())
 		{
-			String s = Serial.readString();
-			if(s[0]=='$')
+			lastMessage = Serial.readString();
+			CommandType commandType = CommandParser::GetCommandType(lastMessage);
+			switch(commandType)
 			{
-				switch (ParseCommand(s))
-				{
-					case 0:
-						SendData= &ClientService::StopSend;
-						Serial.println("Transmitting stopped");
-						break;
-					case 1:
-						SendData= &ClientService::SendSensorsValues;
-						Serial.println("Begin transmitting sensors values");
-						break;
-					case 2:
-						SendData= &ClientService::SendOrientation;
-						Serial.println("Begin transmitting orientation values");
-						break;
-					case 3:
-						SendData= &ClientService::StopSend;
-						break;
-					case 4:
-						SendData = &ClientService::SendDelay;
-						break;
-					default:
-						SendData= &ClientService::StopSend;
-						Serial.print(s);
-						Serial.println(" - Unknown command");
-						break;
-				}
-				delay(500);
+				case ClientServiceCommand:
+				SetState(CommandParser::ParseClientServiceCommand(lastMessage));
+				break;
+				case ContrllerCommand:
+				_controller->SetState(CommandParser::ParceControllerCommand(lastMessage));
+				break;
+				default:
+				_controller->Message = lastMessage;
+				break;
 			}
+			
 		}
 	}
 	
-	int ParseCommand(String s){
-		if(s=="$stop"){
-			return 0;
+	void SetState(ClientServiceState state)
+	{
+		switch (state)
+		{
+			case Stop:
+			SendData= &ClientService::StopSend;
+			Serial.println("Transmitting stopped");
+			break;
+			case Sensors:
+			SendData= &ClientService::SendSensorsValues;
+			Serial.println("Begin transmitting sensors values");
+			break;
+			case Orientation:
+			SendData= &ClientService::SendOrientation;
+			Serial.println("Begin transmitting orientation values");
+			break;
+			case Compass:
+			SendData= &ClientService::StopSend;
+			break;
+			case Delay:
+			SendData = &ClientService::SendDelay;
+			break;
+			case Rotors:
+			SendData = &ClientService::SendRotorSpeeds;
+			Serial.println("Begin transmitting rotor speeds");
+			break;
+			default:
+			SendData= &ClientService::StopSend;
+			Serial.println("Unknown command");
+			break;
 		}
-		if(s=="$sensors"){
-			return 1;
-		}
-		if(s=="$orientation"){
-			return 2;
-		}
-		if(s=="$compass"){
-			return 3;
-		}
-		if(s=="$delay"){
-			return 4;
-		}
-		return -1;
+		
+		delay(500);
 	}
 	
 	void SendOrientation()
@@ -99,6 +121,19 @@ class ClientService
 		Serial.print(_stabilizator->GetRoll());
 		Serial.print("#");
 		Serial.println(_stabilizator->GetPitch());
+	}
+	
+	void SendRotorSpeeds()
+	{
+		int s1,s2,s3,s4;
+		_controller->GetRotorSpeeds(&s1,&s2,&s3,&s4);
+		Serial.print(s1);
+		Serial.print("#");
+		Serial.print(s2);
+		Serial.print("#");
+		Serial.print(s3);
+		Serial.print("#");
+		Serial.println(s4);
 	}
 	
 	void SendSensorsValues()
@@ -126,8 +161,8 @@ class ClientService
 	}
 
 	void SendDelay(){
-		Serial.println(_stabilizator->dt);
+		Serial.println(_dt);
 	}
-	void StopSend(){}
+void StopSend(){}
 
 };
