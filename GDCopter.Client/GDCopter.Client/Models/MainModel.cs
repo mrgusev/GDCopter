@@ -10,56 +10,50 @@ namespace GDCopter.Client.Models
 {
     class MainModel : ModelBase
     {
-        private readonly List<ServiceBase> _services; 
         public MainModel()
         {
-            ConnectionModel = new ConnectionModel{BaudRate = 115200, Port = "COM3"};
+            Services = new List<ServiceBase>();
+            ConnectionModel = new ConnectionModel { BaudRate = 57600, Port = "COM3" };
+            CompassDataModel = new CompassDataModel();
             OrientationModel = new OrientationModel();
             AllSensorsDataModel = new AllSensorsDataModel();
+            RotorsModel = new RotorsModel();
             TerminalModel = new TerminalModel();
-            ApplicationStatusModel = new ApplicationStateModel{IsTerminal = true};
+            ApplicationStatusModel = new ApplicationStateModel { IsTerminal = true };
             ApplicationStatusModel.PropertyChanged += ApplicationStatusModelPropertyChanged;
-            CommunicationModule = new CommunicationModule(ConnectionModel);
-            TerminalService= new TerminalService(CommunicationModule, TerminalModel);
-            OrientationService  = new OrientationService(CommunicationModule, OrientationModel);
-            AllSensorsDataService = new AllSensorsDataService(CommunicationModule, AllSensorsDataModel);
-            _services= new List<ServiceBase>{TerminalService,OrientationService, AllSensorsDataService};
-            ConnectionModel.PropertyChanged += ConnectionModel_PropertyChanged;
+            ConnectionModel.PropertyChanged += ConnectionModelPropertyChanged;
         }
 
-        void ConnectionModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public List<ServiceBase> Services { get; private set; }
+
+        public ConnectionModel ConnectionModel { get; private set; }
+
+        public OrientationModel OrientationModel { get; private set; }
+
+        public AllSensorsDataModel AllSensorsDataModel { get; private set; }
+
+        public CompassDataModel CompassDataModel { get; private set; }
+
+        public ApplicationStateModel ApplicationStatusModel { get; set; }
+
+        public TerminalModel TerminalModel { get; private set; }
+
+        public RotorsModel RotorsModel { get; private set; }
+
+        private void ConnectionModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName=="IsRunning")
+            if (e.PropertyName == "IsRunning")
             {
-                if(!ConnectionModel.IsRunning)
+                if (!ConnectionModel.IsRunning)
                 {
-                    _services.ForEach(s=>s.Stop());
+                    Services.ForEach(s => s.Stop());
                 }
             }
         }
 
-
-        public ConnectionModel ConnectionModel { get; set; }
-
-        public OrientationModel OrientationModel { get; set; }
-
-        public AllSensorsDataModel AllSensorsDataModel { get; set; }
-
-        public ApplicationStateModel ApplicationStatusModel { get; set; }
-
-        public TerminalModel TerminalModel { get; set; }
-
-        public CommunicationModule CommunicationModule { get; set; }
-
-        public TerminalService TerminalService { get; set; }
-
-        public OrientationService OrientationService { get; set; }
-
-        public AllSensorsDataService AllSensorsDataService { get; set; }
-
         private void ApplicationStatusModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _services.ForEach(p => p.Stop());
+            Services.ForEach(p => p.Stop());
 
             switch (ApplicationStatusModel.ApplicationState)
             {
@@ -72,6 +66,8 @@ namespace GDCopter.Client.Models
                 case ApplicationState.OrientationChart:
                     break;
                 case ApplicationState.Connection:
+                    break;
+                case ApplicationState.Rototrs:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

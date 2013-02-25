@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GDCopter.Client.Models
 {
-    class OrientationModel : ModelBase
+    public class OrientationModel : ModelBase
     {
         private double _yaw;
 

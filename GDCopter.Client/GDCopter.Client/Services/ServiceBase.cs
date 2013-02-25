@@ -11,7 +11,7 @@ namespace GDCopter.Client.Services
 
         protected CommunicationModule CommunicationModule { get; private set; }
 
-        public ServiceBase(CommunicationModule communicationModule, ModelBase model)
+        protected ServiceBase(CommunicationModule communicationModule, ModelBase model)
         {
             Model = model;
             CommunicationModule = communicationModule;

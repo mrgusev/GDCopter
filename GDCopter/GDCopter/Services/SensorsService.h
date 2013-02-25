@@ -27,6 +27,14 @@ class SensorsService
 		xAccelOffset = 500.0f;
 		yAccelOffset = -100.0f;
 		zAccelOffset = -650.0f;
+		
+		xCompassOffset = 50.0f;
+		yCompassOffset = 300.0f;
+		zCompassOffset = 75.0f;
+		
+		xCompassScale = 500.0f;
+		yCompassScale = 1000.0f;
+		zCompassScale = 850.0f;
 		//To add the definition for the magntometer and accel offsets
 		
 	}
@@ -38,7 +46,8 @@ class SensorsService
 		
 		gyroValues = Vector3f((float)gx-xGyroOffset,(float)gy-yGyroOffset,(float)gz-zGyroOffset);
 		accellValues = Vector3f((float)ax-xAccelOffset,(float)ay-yAccelOffset,(float)az-zAccelOffset);
-		compassValues = Vector3f(mx,my,mz);
+		compassValues = Vector3f((mx+zCompassOffset)/xCompassScale,(my+yCompassOffset)/yCompassScale, 
+			(mz+zCompassOffset)/zCompassScale);
 		
 		gyroValues = (gyroValues/14.375f)*DEG_TO_RAD;
 		accellValues/= 16384.f;
@@ -82,6 +91,9 @@ class SensorsService
 	float xCompassOffset;
 	float yCompassOffset;
 	float zCompassOffset;
+	float xCompassScale;
+	float yCompassScale;
+	float zCompassScale;
 	
 	Vector3f gyroValues;
 	Vector3f accellValues;

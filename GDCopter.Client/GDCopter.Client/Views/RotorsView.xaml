@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="GDCopter.Client.Views.RotorsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <Grid>
+        <StackPanel IsEnabled="{Binding IsRunning}" Orientation="Horizontal"  Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="2">
+                <StackPanel Orientation="Vertical" >
+                <TextBlock TextWrapping="Wrap" Text="Rotor 1" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                <Slider x:Name="slider" Value="{Binding Rotor1, Mode=TwoWay}"  Orientation="Vertical" Height="100" SmallChange="1" Maximum="1024" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                <TextBox Text="{Binding Value, ElementName=slider, Mode=TwoWay}" Width="50" Margin="5,0,5,5"  />
+
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="2">
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock TextWrapping="Wrap" Text="Rotor 2" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <Slider x:Name="slider1" Value="{Binding Rotor2, Mode=TwoWay}" Orientation="Vertical" Height="100" SmallChange="1" Maximum="1024" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBox Text="{Binding Value, ElementName=slider1, Mode=TwoWay}" Width="50" Margin="5,0,5,5"  />
+
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="2">
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock TextWrapping="Wrap" Text="Rotor 3" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <Slider x:Name="slider2" Value="{Binding Rotor3, Mode=TwoWay}"  Orientation="Vertical" Height="100" SmallChange="1" Maximum="1024" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBox Text="{Binding Value, ElementName=slider2, Mode=TwoWay}" Width="50" Margin="5,0,5,5"  />
+
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Padding="2">
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock TextWrapping="Wrap" Text="Rotor 4" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <Slider x:Name="slider3" Value="{Binding Rotor4, Mode=TwoWay}"  Orientation="Vertical" Height="100" SmallChange="1" Maximum="1024" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBox Text="{Binding Value, ElementName=slider3, Mode=TwoWay}" Width="50" Margin="5,0,5,5"  />
+
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <Button   Content="{Binding StatusAction}" HorizontalAlignment="Left" Margin="10,190,0,10" VerticalAlignment="Bottom" Width="75" Click="StatusButtonClick"/>
+
+    </Grid>
+</UserControl>

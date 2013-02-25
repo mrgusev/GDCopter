@@ -59,6 +59,7 @@ namespace GDCopter.Client.Views
         public void RefreshPortNames()
         {
             portsComboBox.Items.Clear();
+            portsComboBox.Items.Refresh();
             foreach (var item in SerialPort.GetPortNames())
             {
                 portsComboBox.Items.Add(item);

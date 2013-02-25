@@ -61,5 +61,14 @@ namespace GDCopter.Client.Views
             //    _sendHistoryUpCount++;
             //}
         }
+
+        private void ClearButtonClick(object sender, RoutedEventArgs e)
+        {
+            var model = ((TerminalModel) DataContext);
+            if(Equals(sender, clearSendButton))
+            {
+                model.SentMessages.Clear();
+            }
+        }
     }
 }

@@ -48,7 +48,7 @@ namespace GDCopter.Client.Views
             linegraph7.Description = new PenDescription("X");
             linegraph8.Description = new PenDescription("Y");
             linegraph9.Description = new PenDescription("Z");
-           
+
         }
 
         private void AllSensorsDataViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -58,7 +58,7 @@ namespace GDCopter.Client.Views
 
         private void AllSensorsDataViewPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "Data")
+            if (e.PropertyName == "Data")
             {
                 UpdateCharts();
             }
@@ -72,14 +72,23 @@ namespace GDCopter.Client.Views
 
         private void UpdateCharts()
         {
-            UpdateGyro();
-            UpdateAccell();
-            UpdateMag();
+            if (gyroCheckBox.IsChecked.Value)
+            {
+                UpdateGyro();
+            }
+            if (accelCheckBox.IsChecked.Value)
+            {
+                UpdateAccell();
+            }
+            if (compassCheckBox.IsChecked.Value)
+            {
+                UpdateMag();
+            }
         }
 
         void UpdateGyro()
         {
-            var model = (AllSensorsDataModel) DataContext;
+            var model = (AllSensorsDataModel)DataContext;
             var datesDataSource = new EnumerableDataSource<DateTime>(model.GyroValues.Select(d => d.Time));
             datesDataSource.SetXMapping(x => dateAxis1.ConvertToDouble(x));
 

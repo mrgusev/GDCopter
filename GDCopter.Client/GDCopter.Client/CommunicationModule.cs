@@ -26,6 +26,7 @@ namespace GDCopter.Client
             if (!SerialPort.IsOpen)
             {
                 SerialPort = new SerialPort();
+                
                 SerialPort.PortName = ConnectionModel.Port;
                 SerialPort.BaudRate = ConnectionModel.BaudRate;
                 SerialPort.DataReceived += DataReceived;
@@ -81,8 +82,16 @@ namespace GDCopter.Client
 
         public void SendMessage(string message)
         {
-            if(SerialPort.IsOpen)
-            SerialPort.Write(message);
+            try
+            {
+                if (SerialPort.IsOpen)
+                    SerialPort.Write(message);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to send a message to port" + SerialPort.PortName,
+                                   "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public string LastMessage

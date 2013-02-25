@@ -29,18 +29,32 @@ namespace GDCopter.Client
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
+        public CommunicationModule CommunicationModule { get; set; }
+
+        public TerminalService TerminalService { get; set; }
+
+        public OrientationService OrientationService { get; set; }
+
+        public AllSensorsDataService AllSensorsDataService { get; set; }
+
+        public CompassDataService CompassDataService { get; set; }
+
+        public RotorsService RotorsService { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainModel();
-
+            var mainModel = new MainModel();
+            CommunicationModule = new CommunicationModule(mainModel.ConnectionModel);
+            TerminalService = new TerminalService(CommunicationModule, mainModel.TerminalModel);
+            OrientationService = new OrientationService(CommunicationModule, mainModel.OrientationModel);
+            AllSensorsDataService = new AllSensorsDataService(CommunicationModule, mainModel.AllSensorsDataModel);
+            CompassDataService = new CompassDataService(CommunicationModule,mainModel.CompassDataModel);
+            RotorsService = new RotorsService(CommunicationModule, mainModel.RotorsModel);
+            mainModel.Services.AddMany(TerminalService, OrientationService, AllSensorsDataService,RotorsService);
+            DataContext = mainModel;
         }
-
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-      
-      
     }
 }
