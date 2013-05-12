@@ -105,10 +105,19 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Core\CommandParser.h">
+    <Compile Include="Core\CommandManager.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Core\Enums.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Core\Controller.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Core\InputMessage.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Core\OutputMessage.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Core\Stabilizator.h">

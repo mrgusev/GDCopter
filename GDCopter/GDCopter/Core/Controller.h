@@ -32,14 +32,9 @@ class Controller
 	void Initialize(RotorService* rotorService)
 	{
 		_rotorService  = rotorService;
-		_speed1 = 0;
-		_speed2 = 0;
-		_speed3 = 0;
-		_speed4 = 0;
-		UpdateRotors= &Controller::EmptyAction;
 	}
 	
-	void GetRotorSpeeds(int* speed1,int* speed2,int* speed3,int* speed4)
+	void GetRotorSpeeds(char* speed1, char* speed2, char* speed3, char* speed4)
 	{
 		*speed1 = _speed1;
 		*speed2 = _speed2;
@@ -47,32 +42,41 @@ class Controller
 		*speed4 = _speed4;
 	}
 	
+	void SetRotorSpeeds(int speed1, int speed2, int speed3, int speed4)
+	{
+		_speed1 = speed1;
+		_speed2 = speed2;
+		_speed3 = speed3;
+		_speed4 = speed4;
+	}
 	void SetState(ControllerState state)
 	{
-		switch (state)
-		{
-			case StopRotors:
-			StopAllRotors();
-			
-			UpdateRotors=  &Controller::EmptyAction;
-			break;
-			case Stabilization:
-			UpdateRotors= &Controller::Stabilize;
-			break;
-			case DirectValues:
-			UpdateRotors= &Controller::SetCustomValues;
-			break;
-			default:
-			UpdateRotors= &Controller::StopAllRotors;
-			break;
-		}
+		controllerState = state;	
+	}
+	
+	void SetDt(int dt)
+	{
+		_dt = dt;	
 	}
 	
 	void Update()
 	{
-		(this->*UpdateRotors)();
+		switch (controllerState)
+		{
+			case StopRotors:
+			_speed1 = _speed2 = _speed3 = _speed4 = 0;
+			break;
+			case Stabilization:
+			CalculateMotorsSpeeds();
+			break;
+			case DirectValues:
+			break;
+			default:
+			_speed1 = _speed2 = _speed3 = _speed4 = 0;
+			break;
+		}
+		_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
 	}
-	
 	
 	String Message;
 	
@@ -88,26 +92,13 @@ class Controller
 	float thirdRotorSpeedSq;
 	float fourthRotorSpeedSq;
 	
-	Stabilizator* _stabilizator;
-	RotorService* _rotorService;
+	int _dt;
+	int controllerState;
 	
 	int _speed1, _speed2, _speed3, _speed4;
 	
-	void (Controller::*UpdateRotors)();
-	
-	void StopAllRotors()
-	{
-		_speed1= _speed2= _speed3= _speed4=100;
-		_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
-	}
-	
-	void EmptyAction()
-{}
-	
-	void Stabilize()
-	{
-		
-	}
+	Stabilizator* _stabilizator;
+	RotorService* _rotorService;
 	
 	void CalculateMotorsSpeeds()
 	{
@@ -116,10 +107,10 @@ class Controller
 		float currentRoll = _stabilizator->GetRoll();
 		float currentYaw = _stabilizator->GetYaw();
 		Matrix3f rotationMatrix = _stabilizator->GetRotationMatrix();
-		float totalThrust = (9.8f + ThrustDerivativeCoef * (previousAltitude - currentAltitude) / dt - ThrustProportionalCoef * currentAltitude) * QuadMass / rotationMatrix.c.z;
-		float rollTorque = (ThrustDerivativeCoef * (previousRoll - currentRoll) / dt - ThrustProportionalCoef * currentRoll) * QuadInertiaX;
-		float pitchTorque = (ThrustDerivativeCoef * (previousPitch - currentPitch) / dt - ThrustProportionalCoef * currentPitch) * QuadInertiaY;
-		float yawTorque = (ThrustDerivativeCoef * (previousYaw - currentYaw) / dt - ThrustProportionalCoef * currentYaw) * QuadInertiaZ;
+		float totalThrust = (9.8f + ThrustDerivativeCoef * (previousAltitude - currentAltitude) / _dt - ThrustProportionalCoef * currentAltitude) * QuadMass / rotationMatrix.c.z;
+		float rollTorque = (ThrustDerivativeCoef * (previousRoll - currentRoll) / _dt - ThrustProportionalCoef * currentRoll) * QuadInertiaX;
+		float pitchTorque = (ThrustDerivativeCoef * (previousPitch - currentPitch) / _dt - ThrustProportionalCoef * currentPitch) * QuadInertiaY;
+		float yawTorque = (ThrustDerivativeCoef * (previousYaw - currentYaw) / _dt - ThrustProportionalCoef * currentYaw) * QuadInertiaZ;
 		
 		float thrustAdditive = totalThrust / 4 / RotorLiftConstant;
 		float pitchAdditive = pitchTorque / (2 * RotorLiftConstant * QuadRadius);
@@ -135,10 +126,5 @@ class Controller
 		thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
 		fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
 	}
-	
-	void SetCustomValues()
-	{
-		CommandParser::ParseRotorSpeed(Message,&_speed1,&_speed2,&_speed3,&_speed4);
-		_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
-	}
+
 };

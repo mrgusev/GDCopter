@@ -15,11 +15,6 @@ public:
 		rotor3.attach(11);
 		rotor4.attach(12);
 	}
-
-	void StopAllRotors()
-	{
-		SetRotorsSpeed(5,5,5,5);
-	}
 	
 	void SetRotorsSpeed(int r1, int r2, int r3, int r4)
 	{

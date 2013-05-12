@@ -10,6 +10,7 @@
 class Stabilizator
 {
 	private:
+	long dt;
 	long previousMillis;
 	SensorsService* _sensorsService;
 	Matrix3f rotationMatrix;
@@ -49,6 +50,8 @@ class Stabilizator
 	
 	void CalculateAngles()
 	{		
+		_sensorsService->UpdateValues();
+		
 		Vector3<float> currentGyroValues = _sensorsService->GetGyroValues();
 		Vector3<float> currentAccelValues = _sensorsService->GetAccelValues();
 		Vector3<float> currentCompassValues = _sensorsService->GetCompassValues();
@@ -93,9 +96,9 @@ class Stabilizator
 	}
 
 
-	Vector3l GetOrientation()
+	Vector3f GetOrientation()
 	{
-		return earthAngles;
+		return Vector3f(currentPitch, currentYaw, currentRoll);
 	}
 	
 	Matrix3f GetRotationMatrix()
@@ -107,6 +110,8 @@ class Stabilizator
 	{
 		return currentAltitude;
 	}
+	
+	
 	
 	float GetPitch()
 	{
