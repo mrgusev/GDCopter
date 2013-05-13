@@ -14,12 +14,12 @@ class ClientService
 	}
 	void SendText(char* s)
 	{
-		Serial.print(s);
+		Serial.print("*");
 		Serial.println(s);
 	}
-	void SendMessage(char* message)
+	void SendMessage(byte* message)
 	{
-		Serial.write(*message);
+		Serial.write(message, 52);
 	}
 	char* GetMessage()
 	{

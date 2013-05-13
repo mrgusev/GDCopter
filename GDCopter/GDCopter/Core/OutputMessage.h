@@ -5,7 +5,6 @@
  *  Author: Kirill
  */ 
 
-union float2chars { float f; char b[sizeof(float)]; };
 class OutputMessage
 {
 	private:
@@ -14,35 +13,33 @@ class OutputMessage
 	Vector3f accel;
 	Vector3f gyro;
 	Vector3f compass;
-	char rotors[4];
+	byte rotors[4];
 	
-	char* GetFloatchars(float f)
+	byte* GetFloatbytes(float f)
 	{		
-		float2chars f2b;	
-		f2b.f = f;
-		return f2b.b;	
+		return (byte*)&f;
 	}
 	
-	char* GetVector3fchars(Vector3f vec)
+	byte* GetVector3fbytes(Vector3f vec)
 	{
-		char result[12];
+		byte result[12];
 		
-		char* floatchars = GetFloatchars(vec.x);
+		byte* floatbytes = GetFloatbytes(vec.x);
 		for (uint16_t j = 0; j < 4; j++)
 		{
-			result[j] = floatchars[j];
+			result[j] = floatbytes[j];
 		}
 		
-		floatchars = GetFloatchars(vec.y);		
+		floatbytes = GetFloatbytes(vec.y);		
 		for (uint16_t j = 0; j < 4; j++)
 		{
-			result[j+1] = floatchars[j];
+			result[j+1] = floatbytes[j];
 		}
 		
-		floatchars = GetFloatchars(vec.z);
+		floatbytes = GetFloatbytes(vec.z);
 		for (uint16_t j = 0; j < 4; j++)
 		{
-			result[j+2] = floatchars[j];
+			result[j+2] = floatbytes[j];
 		}
 	}
 	
@@ -68,7 +65,7 @@ class OutputMessage
 		compass = vec;
 	}
 	
-	void SetRotors(char r1,char r2,char r3,char r4)
+	void SetRotors(byte r1,byte r2,byte r3,byte r4)
 	{
 		rotors[0] = r1;
 		rotors[1] = r2;
@@ -76,38 +73,38 @@ class OutputMessage
 		rotors[3] = r4;
 	}
 	
-	char* Getchars()
+	byte* Getbytes()
 	{
-		char chars[52];
-		uint16_t charsCounter = 0;
+		byte bytes[52];
+		uint16_t bytesCounter = 0;
 		uint16_t i;
-		char* buf = GetVector3fchars(orienation);
-		for(i = 0; i < 12; i++, charsCounter++)
+		byte* buf = GetVector3fbytes(orienation);
+		for(i = 0; i < 12; i++, bytesCounter++)
 		{
-			chars[charsCounter] = buf[i];
+			bytes[bytesCounter] = buf[i];
 		}
 		
-		buf = GetVector3fchars(gyro);
-		for(i = 0; i < 12; i++, charsCounter++)
+		buf = GetVector3fbytes(gyro);
+		for(i = 0; i < 12; i++, bytesCounter++)
 		{
-			chars[charsCounter] = buf[i];
+			bytes[bytesCounter] = buf[i];
 		}
 		
-		buf = GetVector3fchars(accel);
-		for(i = 0; i < 12; i++, charsCounter++)
+		buf = GetVector3fbytes(accel);
+		for(i = 0; i < 12; i++, bytesCounter++)
 		{
-			chars[charsCounter] = buf[i];
+			bytes[bytesCounter] = buf[i];
 		}
 		
-		buf = GetVector3fchars(compass);
-		for(i = 0; i < 12; i++, charsCounter++)
+		buf = GetVector3fbytes(compass);
+		for(i = 0; i < 12; i++, bytesCounter++)
 		{
-			chars[charsCounter] = buf[i];
+			bytes[bytesCounter] = buf[i];
 		}
 		
-		for (i = 0; i < 4; i++, charsCounter++)
+		for (i = 0; i < 4; i++, bytesCounter++)
 		{
-			chars[charsCounter] = rotors[i];
+			bytes[bytesCounter] = rotors[i];
 		}
 	}
 };

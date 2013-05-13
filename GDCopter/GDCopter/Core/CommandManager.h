@@ -29,10 +29,11 @@ class CommandManager
 		_timerCount += _dt;
 		if(_timerCount >= 50)
 		{
+			_clientService->SendText("Receiving message...");
 			_inputMessage.Parse(_clientService->GetMessage());
 			SetInputCommands();
 			SetOutputData();
-			_clientService->SendMessage(_outputMessage.Getchars());
+			//_clientService->SendMessage(_outputMessage.Getchars());
 			_timerCount = 0;
 		}
 	}

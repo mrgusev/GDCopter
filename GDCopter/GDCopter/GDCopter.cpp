@@ -20,6 +20,7 @@ CommandManager commandManager;
 
 void setup()
 {
+	clientService.SendText("Device started...");
 	previousMillis = 0;
 	sensorsService.Innitialize();
 	rotorService.Initialize();
@@ -32,6 +33,7 @@ void setup()
 
 void loop()
 {
+	
 	unsigned long currentMillis = micros();
 	dt = currentMillis - previousMillis;
 	controller.SetDt(dt);
