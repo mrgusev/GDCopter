@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDCopter.Client", "GDCopter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDCopter.TempClient", "GDCopter.TempClient\GDCopter.TempClient.csproj", "{4AABFBF0-C4EE-40E6-8925-07868729C25C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialConnectionTester", "..\..\..\Users\vasil_000\Documents\Projects\VisualStudio\SerialConnectionTester\SerialConnectionTester\SerialConnectionTester.csproj", "{EC26766A-8D40-4C70-8AEC-CC353DCD37DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialConnectionTester", "SerialConnectionTester\SerialConnectionTester.csproj", "{EC26766A-8D40-4C70-8AEC-CC353DCD37DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
