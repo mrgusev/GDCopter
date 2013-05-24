@@ -32,14 +32,15 @@ class Controller
 	void Initialize(RotorService* rotorService)
 	{
 		_rotorService  = rotorService;
+		controllerState = Stabilization;
 	}
 	
-	void GetRotorSpeeds(char* speed1, char* speed2, char* speed3, char* speed4)
+	void GetRotorSpeeds(float* speed1, float* speed2, float* speed3, float* speed4)
 	{
-		*speed1 = _speed1;
-		*speed2 = _speed2;
-		*speed3 = _speed3;
-		*speed4 = _speed4;
+		*speed1 = firstMotorSpeedSq;
+		*speed2 = secondMotorSpeedSq;
+		*speed3 = thirdRotorSpeedSq;
+		*speed4 = fourthRotorSpeedSq;
 	}
 	
 	void SetRotorSpeeds(int speed1, int speed2, int speed3, int speed4)

@@ -29,11 +29,10 @@ class CommandManager
 		_timerCount += _dt;
 		if(_timerCount >= 50)
 		{
-			_clientService->SendText("Receiving message...");
-			_inputMessage.Parse(_clientService->GetMessage());
-			SetInputCommands();
+			//_inputMessage.Parse(_clientService->GetMessage());
+			//SetInputCommands();
 			SetOutputData();
-			//_clientService->SendMessage(_outputMessage.Getchars());
+			_clientService->SendMessage(_outputMessage.GetBytes());
 			_timerCount = 0;
 		}
 	}
@@ -81,7 +80,7 @@ class CommandManager
 		_outputMessage.SetAccel(_sensorsService->GetAccelValues());
 		_outputMessage.SetCompass(_sensorsService->GetCompassValues());
 		
-		char r1, r2, r3, r4;
+		float r1, r2, r3, r4;
 		_controller->GetRotorSpeeds(&r1, &r2, &r3, &r4);
 		_outputMessage.SetRotors(r1, r2, r3, r4);
 	}
