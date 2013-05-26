@@ -38,8 +38,8 @@ class Stabilizator
 		rotationMatrix.c = Vector3f(0,0,1);
 		//earthAngles = Vector3l(0,0,0);
 		
-		FilterGyroCoef=0.9;
-		FilterAccelCoef=0.1;
+		FilterGyroCoef=0.7;
+		FilterAccelCoef=0.15;
 		FilterCompasCoef=0.15;
 		
 		currentPitch=0;
@@ -58,20 +58,20 @@ class Stabilizator
 		
 		//¬ычисл€ем длины векторов, дл€ нахождени€ косинусов углов между ними и ос€ми
 		float gravityVectorLength = currentAccelValues.length();
-		//float magneticVectorLength = currentCompassValues.length();
+		float magneticVectorLength = currentCompassValues.length();
 		
 		//¬ычисл€ем косинусы углов между ос€ми инерционной и объектной систем
 		//¬ычисленные косинусы составл€ют первую и третью строки матрицы дл€ данной итерации
-		//Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
+		Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
 		Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
 		//
 		//Ќаходим угловое приращение трем€ разными способами
 		Vector3f gyroAngularDisplacement = currentGyroValues * (float)dt/1000000.0f;
 		Vector3f accelAngularDisplacement = rotationMatrix.c % (currentRotationMatrixThirdRow - rotationMatrix.c);
-	//	Vector3f compasAngularDisplacement = RotationMatrix.a % (currentRotationMatrixFirstRow - RotationMatrix.a);
+		Vector3f compasAngularDisplacement = rotationMatrix.a % (currentRotationMatrixFirstRow - rotationMatrix.a);
 		//
 		//Ќаходим среднее между трем€ способами
-		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  FilterGyroCoef + accelAngularDisplacement * FilterAccelCoef;//; + compasAngularDisplacement * filterCompasCoef;
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  FilterGyroCoef + accelAngularDisplacement * FilterAccelCoef + compasAngularDisplacement * FilterCompasCoef;
 		
 		//Ќаходим новую матрицу поворота
 		rotationMatrix.a += (rotationMatrix.a % averageAngularDisplacement);

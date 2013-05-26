@@ -65,6 +65,6 @@ class OutputMessage
 		data[13] = rotors[1];
 		data[14] = rotors[2];
 		data[15] = rotors[3];
-		return (byte*)&data;
+		return (byte*)data;
 	}
 };
