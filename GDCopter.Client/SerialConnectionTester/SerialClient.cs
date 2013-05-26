@@ -198,17 +198,17 @@ namespace SerialConnectionTester
                 int packetsAmount = count / 64;
                 byte[] buf = new byte[packetsAmount*64];
                 int readBytes = Receive(buf, 0, packetsAmount*64);
-                float[] floatsArray = new float[packetsAmount*16];
+                float[] floatsArray = new float[readBytes/4];
                 Buffer.BlockCopy(buf, 0, floatsArray, 0, buf.Length);
-                float[,] packets = new float[16, packetsAmount];
-                for (int i = 0, k=0; i < 16; i++)
+                float[,] packets = new float[packetsAmount,16];
+
+                for (int i = 0 , k = 0; i < packetsAmount; i++)
                 {
-                    for (int j = 0; j < packetsAmount; j++, k++)
+                    for (int j = 0; j < 16; j++, k++)
                     {
                         packets[i, j] = floatsArray[k];
                     }
                 }
-
                 if (readBytes > 0)
                 {
                     OnSerialReceiving(packets);

@@ -20,6 +20,7 @@ CommandManager commandManager;
 
 void setup()
 {
+	delay(10000);
 	previousMillis = 0;
 	sensorsService.Innitialize();
 	rotorService.Initialize();

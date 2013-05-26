@@ -29,11 +29,11 @@ class CommandManager
 		_timerCount += _dt;
 		if(_timerCount >= 50)
 		{
+			_timerCount -= 50;
 			//_inputMessage.Parse(_clientService->GetMessage());
 			//SetInputCommands();
 			SetOutputData();
 			_clientService->SendMessage(_outputMessage.GetBytes());
-			_timerCount = 0;
 		}
 	}
 	
