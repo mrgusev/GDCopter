@@ -49,22 +49,22 @@ class OutputMessage
 	
 	byte* GetBytes()
 	{
-		data[0] = orienation.x;
-		data[1] = orienation.y;
-		data[2] = orienation.z;
-		data[3] = gyro.x;
-		data[4] = gyro.y;
-		data[5] = gyro.z;
-		data[6] = accel.x;
-		data[7] = accel.y;
-		data[8] = accel.z;
-		data[9] = compass.x;
-		data[10] = compass.y;
-		data[11] = compass.z;
-		data[12] = rotors[0];
-		data[13] = rotors[1];
-		data[14] = rotors[2];
-		data[15] = rotors[3];
-		return (byte*)&data;
+		data[0] = 111.111f;//orienation.x;
+		data[1] = 222.222f;//orienation.y;
+		data[2] = 333.333f;//orienation.z;
+		data[3] = 444.444f;//gyro.x;
+		data[4] = 555.555f;//gyro.y;
+		data[5] = 666.666f;//gyro.z;
+		data[6] = 777.777f;//accel.x;
+		data[7] = 888.888f;//accel.y;
+		data[8] = 999.999f;//accel.z;
+		data[9] = 101.101f;//compass.x;
+		data[10] = 111.111f;//compass.y;
+		data[11] = 121.121f;//compass.z;
+		data[12] = 131.131f;//rotors[0];
+		data[13] = 141.141f;//rotors[1];
+		data[14] = 151.151f;//rotors[2];
+		data[15] = 161.161f;//rotors[3];
+		return (byte*)data;
 	}
 };

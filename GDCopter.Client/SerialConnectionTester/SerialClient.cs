@@ -102,6 +102,7 @@ namespace SerialConnectionTester
                     _serialPort.WriteTimeout = -1;
 
                     _serialPort.Open();
+                    _serialPort.DiscardInBuffer();
 
                     if (_serialPort.IsOpen)
                         serThread.Start(); /*Start The Communication Thread*/

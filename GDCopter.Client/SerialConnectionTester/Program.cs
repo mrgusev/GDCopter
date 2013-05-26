@@ -15,12 +15,12 @@ namespace SerialConnectionTester
             SerialClient serialClient = new SerialClient("COM4", 9600);
             serialClient.OnReceiving += serialClient_OnReceiving;
             serialClient.OpenConn();
-            
+
         }
 
         static void serialClient_OnReceiving(object sender, DataStreamEventArgs e)
         {
-            Console.WriteLine("Yaw={0}\tPitch={1}\tRoll={2}", e.Response[0], e.Response[1], e.Response[2]);
+            Console.WriteLine("Yaw={0}\tPitch={1}\tRoll={2}", e.Response[0] * 57, e.Response[1] * 57, e.Response[2] * 57);
         }
     }
 }
