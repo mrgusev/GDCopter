@@ -11,18 +11,18 @@ namespace SerialConnectionTester
     public class DataStreamEventArgs : EventArgs
     {
         #region Fields
-        private float[] _bytes;
+        private float[,] _bytes;
         #endregion
 
         #region Constructors
-        public DataStreamEventArgs(float[] bytes)
+        public DataStreamEventArgs(float[,] bytes)
         {
             _bytes = bytes;
         }
         #endregion
 
         #region Properties
-        public float[] Response
+        public float[,] Response
         {
             get { return _bytes; }
         }
@@ -195,15 +195,23 @@ namespace SerialConnectionTester
                 TimeSpan tmpInterval = (DateTime.Now - _lastReceive);
 
                 /*Form The Packet in The Buffer*/
-                int floatsAmount = count / 4;
-                byte[] buf = new byte[floatsAmount*4];
-                int readBytes = Receive(buf, 0, floatsAmount*4);
-                float[] floatsArray = new float[floatsAmount];
+                int packetsAmount = count / 64;
+                byte[] buf = new byte[packetsAmount*64];
+                int readBytes = Receive(buf, 0, packetsAmount*64);
+                float[] floatsArray = new float[packetsAmount*16];
                 Buffer.BlockCopy(buf, 0, floatsArray, 0, buf.Length);
+                float[,] packets = new float[16, packetsAmount];
+                for (int i = 0, k=0; i < 16; i++)
+                {
+                    for (int j = 0; j < packetsAmount; j++, k++)
+                    {
+                        packets[i, j] = floatsArray[k];
+                    }
+                }
 
                 if (readBytes > 0)
                 {
-                    OnSerialReceiving(floatsArray);
+                    OnSerialReceiving(packets);
                 }
 
                 #region Frequency Control
@@ -229,7 +237,7 @@ namespace SerialConnectionTester
         #endregion
 
         #region Custom Events Invoke Functions
-        private void OnSerialReceiving(float[] res)
+        private void OnSerialReceiving(float[,] res)
         {
             if (OnReceiving != null)
             {
