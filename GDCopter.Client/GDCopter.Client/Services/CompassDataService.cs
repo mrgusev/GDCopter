@@ -25,19 +25,19 @@ namespace GDCopter.Client.Services
             if (IsRunning && CommunicationModule.LastMessage != null)
             {
                 var message = CommunicationModule.LastMessage;
-                var newValues = ParseAllData(message);
+                var newValues = message.Compass;
                 var dataModel = (CompassDataModel)Model;
                 if (dataModel.IsXY)
                 {
-                    dataModel.Points.Add(new Point(newValues[2].X, newValues[2].Y));
+                    dataModel.Points.Add(new Point(newValues.X, newValues.Y));
                 } 
                 if (dataModel.IsXZ)
                 {
-                    dataModel.Points.Add(new Point(newValues[2].X, newValues[2].Z));
+                    dataModel.Points.Add(new Point(newValues.X, newValues.Z));
                 }
                 if (dataModel.IsYZ)
                 {
-                    dataModel.Points.Add(new Point(newValues[2].Y, newValues[2].Z));
+                    dataModel.Points.Add(new Point(newValues.Y, newValues.Z));
                 }
                 if (dataModel.Points.Count > 150)
                     dataModel.Points.RemoveAt(0);

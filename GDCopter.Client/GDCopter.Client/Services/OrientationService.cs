@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 using GDCopter.Client.Models;
 
@@ -23,27 +20,15 @@ namespace GDCopter.Client.Services
         {
             if (IsRunning && CommunicationModule.LastMessage!=null)
             {
-                var values = ParseAllData(CommunicationModule.LastMessage);
+                var values = CommunicationModule.LastMessage;
                 var model = (OrientationModel)Model;
-                model.Pitch = values.X;
-                model.Roll = values.Z;
-                model.Yaw = values.Y;
-                model.OrientationValues.Add(values);
+                model.Pitch = values.Orientation.X;
+                model.Roll = values.Orientation.Z;
+                model.Yaw = values.Orientation.Y;
+                model.OrientationValues.Add(values.Orientation);
                 if (model.OrientationValues.Count > 50)
                     model.OrientationValues.RemoveAt(0);
             }
-        }
-
-        private StatisticPoint ParseAllData(string message)
-        {
-            var now = DateTime.Now;
-            var result = new StatisticPoint();
-            var values = message.Split('#');
-            if (values.Count() == 3)
-            {
-                result = new StatisticPoint(ParseValue(values[0]) * 57.295, ParseValue(values[1]) * 57.295, ParseValue(values[2]) * 57.295, now);
-            }
-            return result;
         }
 
         public override void Run()

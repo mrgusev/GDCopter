@@ -25,11 +25,10 @@ namespace GDCopter.Client.Services
             if (IsRunning && CommunicationModule.LastMessage!=null)
             {
                 var message = CommunicationModule.LastMessage;
-                var newValues = ParseAllData(message);
                 var dataModel = (AllSensorsDataModel)Model;
-                dataModel.GyroValues.Add(newValues[0]);
-                dataModel.AccelValues.Add(newValues[1]);
-                dataModel.CompassValues.Add(newValues[2]);
+                dataModel.GyroValues.Add(message.Gyro);
+                dataModel.AccelValues.Add(message.Accell);
+                dataModel.CompassValues.Add(message.Compass);
                 if (dataModel.GyroValues.Count > 50)
                     dataModel.GyroValues.RemoveAt(0);
                 if (dataModel.AccelValues.Count > 50)

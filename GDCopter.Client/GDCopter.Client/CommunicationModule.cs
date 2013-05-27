@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
+using System.Linq;
 using System.Windows;
 using GDCopter.Client.Models;
 
@@ -8,70 +10,56 @@ namespace GDCopter.Client
 {
     public class CommunicationModule
     {
-        public SerialPort SerialPort { get; private set; }
+        public SerialClient SerialClient { get; private set; }
 
         public ConnectionModel ConnectionModel { get; private set; }
 
-        private string _receivedMessage;
+        private InputMessage _receivedMessage;
 
         public CommunicationModule(ConnectionModel connectionModel)
         {
             ConnectionModel = connectionModel;
-            SerialPort = new SerialPort();
             connectionModel.PropertyChanged += ConnectionModelPropertyChanged;
         }
 
         public bool OpenConnection()
         {
-            if (!SerialPort.IsOpen)
+            SerialClient = new SerialClient(ConnectionModel.Port, ConnectionModel.BaudRate);
+            SerialClient.OnReceiving += DataReceived;
+            try
             {
-                SerialPort = new SerialPort();
-                
-                SerialPort.PortName = ConnectionModel.Port;
-                SerialPort.BaudRate = ConnectionModel.BaudRate;
-                SerialPort.DataReceived += DataReceived;
-                try
-                {
-                    SerialPort.Open();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Unable to connect to port" + SerialPort.PortName,
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                SerialClient.OpenConn();
             }
-            var status = SerialPort.IsOpen;
-            return status;
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to connect to port", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            
+            return true;
         }
 
         public bool CloseConnection()
         {
             SendMessage(ControllerCommands.Stop);
-            SerialPort.Close();
-            SerialPort.DataReceived -= DataReceived;
-            return SerialPort.IsOpen;
+            SerialClient.CloseConn();
+            SerialClient.OnReceiving -= DataReceived;
+            return false;
         }
 
-        private void ConnectionModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ConnectionModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsRunning")
             {
-                if(!ConnectionModel.IsRunning)
-                {
-                    ConnectionModel.IsRunning = CloseConnection();
-                }
-                else
-                {
-                    ConnectionModel.IsRunning = OpenConnection();
-                }
+                ConnectionModel.IsRunning = !ConnectionModel.IsRunning ? CloseConnection() : OpenConnection();
             }
         }
 
-        private void DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void DataReceived(object sender, DataStreamEventArgs dataStreamEventArgs)
         {
             try
             {
-                _receivedMessage = SerialPort.ReadLine();
+                _receivedMessage = new InputMessage(dataStreamEventArgs.Response.First());
                 OnDataRecieved("Message");
             }
             catch (Exception)
@@ -84,17 +72,17 @@ namespace GDCopter.Client
         {
             try
             {
-                if (SerialPort.IsOpen)
-                    SerialPort.Write(message);
+                //if (SerialPort.IsOpen)
+                //    SerialPort.Write(message);
             }
             catch (Exception)
             {
-                MessageBox.Show("Unable to send a message to port" + SerialPort.PortName,
-                                   "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Unable to send a message to port" + SerialPort.PortName,
+                //                   "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        public string LastMessage
+        public InputMessage LastMessage
         {
             get
             {

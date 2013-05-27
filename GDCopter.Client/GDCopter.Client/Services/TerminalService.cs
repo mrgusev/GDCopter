@@ -35,7 +35,7 @@ namespace GDCopter.Client.Services
         {
             if (IsRunning)
             {
-                TerminalModel.RecievedMessages.Add(new KeyValuePair<string, DateTime>(CommunicationModule.LastMessage, DateTime.Now));
+                TerminalModel.RecievedMessages.Add(new KeyValuePair<string, DateTime>(CommunicationModule.LastMessage.ToString(), DateTime.Now));
             }
         }
 
