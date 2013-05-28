@@ -203,7 +203,7 @@ namespace GDCopter.Client
                 List<float[]> packets = new List<float[]>();
                 for (int i = 0 , k = 0; i < packetsAmount; i++)
                 {
-                    packets[i] = new float[16];
+                    packets.Add(new float[16]);
                     for (int j = 0; j < 16; j++, k++)
                     {
                         packets[i][j] = floatsArray[k];

@@ -22,9 +22,9 @@ namespace GDCopter.Client.Services
             {
                 var values = CommunicationModule.LastMessage;
                 var model = (OrientationModel)Model;
-                model.Pitch = values.Orientation.X;
-                model.Roll = values.Orientation.Z;
-                model.Yaw = values.Orientation.Y;
+                model.Pitch = values.Orientation.X*57.3;
+                model.Roll = values.Orientation.Z*57.3;
+                model.Yaw = values.Orientation.Y*57.3;
                 model.OrientationValues.Add(values.Orientation);
                 if (model.OrientationValues.Count > 50)
                     model.OrientationValues.RemoveAt(0);
