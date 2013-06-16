@@ -73,7 +73,7 @@
                     <charting:HorizontalDateTimeAxis x:Name="dateAxis1"/>
                 </charting:ChartPlotter.HorizontalAxis>
                 <charting:ChartPlotter.VerticalAxis>
-                    <charting:VerticalIntegerAxis Name="countAxis"/>
+                    <charting:VerticalAxis Name="countAxis"/>
                 </charting:ChartPlotter.VerticalAxis>
                 <charting:LineGraph x:Name="linegraph1" Stroke="DarkGreen"/>
                 <charting:LineGraph x:Name="linegraph2" Stroke="CornflowerBlue"/>

@@ -43,6 +43,8 @@ namespace GDCopter.Client
 
         public RotorsService RotorsService { get; set; }
 
+        public ControllerSerivce ControllerSerivce { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,6 +55,8 @@ namespace GDCopter.Client
             AllSensorsDataService = new AllSensorsDataService(CommunicationModule, mainModel.AllSensorsDataModel);
             CompassDataService = new CompassDataService(CommunicationModule,mainModel.CompassDataModel);
             RotorsService = new RotorsService(CommunicationModule, mainModel.RotorsModel);
+            ControllerSerivce = new ControllerSerivce(CommunicationModule, mainModel.ControllerModel);
+
             mainModel.Services.AddMany(TerminalService, OrientationService, AllSensorsDataService,RotorsService);
             DataContext = mainModel;
         }
