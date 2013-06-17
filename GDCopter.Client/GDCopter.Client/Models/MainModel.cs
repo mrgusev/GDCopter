@@ -16,6 +16,7 @@ namespace GDCopter.Client.Models
             ConnectionModel = new ConnectionModel { BaudRate = 57600, Port = "COM3" };
             CompassDataModel = new CompassDataModel();
             OrientationModel = new OrientationModel();
+            ControllerModel = new ControllerModel();
             AllSensorsDataModel = new AllSensorsDataModel();
             RotorsModel = new RotorsModel();
             TerminalModel = new TerminalModel();
@@ -40,6 +41,8 @@ namespace GDCopter.Client.Models
 
         public RotorsModel RotorsModel { get; private set; }
 
+        public ControllerModel ControllerModel { get; private set; }
+
         private void ConnectionModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsRunning")
@@ -55,23 +58,23 @@ namespace GDCopter.Client.Models
         {
             Services.ForEach(p => p.Stop());
 
-            switch (ApplicationStatusModel.ApplicationState)
-            {
-                case ApplicationState.Terminal:
-                    break;
-                case ApplicationState.AllSensorsChart:
-                    break;
-                case ApplicationState.CompassChart:
-                    break;
-                case ApplicationState.OrientationChart:
-                    break;
-                case ApplicationState.Connection:
-                    break;
-                case ApplicationState.Rototrs:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            //switch (ApplicationStatusModel.ApplicationState)
+            //{
+            //    case ApplicationState.Terminal:
+            //        break;
+            //    case ApplicationState.AllSensorsChart:
+            //        break;
+            //    case ApplicationState.CompassChart:
+            //        break;
+            //    case ApplicationState.OrientationChart:
+            //        break;
+            //    case ApplicationState.Connection:
+            //        break;
+            //    case ApplicationState.Rototrs:
+            //        break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException();
+            //}
         }
     }
 }

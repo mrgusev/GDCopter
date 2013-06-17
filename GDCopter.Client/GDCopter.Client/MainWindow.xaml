@@ -20,12 +20,13 @@
             <ColumnDefinition/>
 
         </Grid.ColumnDefinitions>
-        <StackPanel IsEnabled="{Binding ConnectionModel.IsRunning}" DataContext="{Binding DataContext, ElementName=window}" Grid.Column="0" HorizontalAlignment="Left" Width="119" Margin="10,10,0,0" Grid.RowSpan="2">
+        <StackPanel  DataContext="{Binding DataContext, ElementName=window}" Grid.Column="0" HorizontalAlignment="Left" Width="119" Margin="10,10,0,0" Grid.RowSpan="2">
             <RadioButton Name="teminalCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="Terminal" IsChecked="{Binding IsTerminal, Mode=TwoWay}" Margin="0,0,0,10"/>
             <RadioButton Name="allSensorsDataCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="All sensors charts" IsChecked="{Binding IsAllSensorsData, Mode=TwoWay}" Margin="0,0,0,10" />
             <RadioButton Name="orientationCheckbox" DataContext="{Binding ApplicationStatusModel}" Content="Orientation" IsChecked="{Binding IsOrientation, Mode=TwoWay}" Margin="0,0,0,10" />
             <RadioButton x:Name="compassChartCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="Compass chart" IsChecked="{Binding IsCompassChart, Mode=TwoWay}" Margin="0,0,0,10" />
             <RadioButton x:Name="rotorsCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="Rotors" IsChecked="{Binding IsRotors, Mode=TwoWay}" Margin="0,0,0,10" />
+            <RadioButton x:Name="controllerCheckBox" DataContext="{Binding ApplicationStatusModel}" Content="Controller" IsChecked="{Binding IsController, Mode=TwoWay}" Margin="0,0,0,10" />
 
         </StackPanel>
         <Grid Grid.Column="1" IsEnabled="{Binding ConnectionModel.IsRunning}">
@@ -34,6 +35,7 @@
             <Views:AllSensorsDataView DataContext="{Binding AllSensorsDataModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=allSensorsDataCheckBox, Mode=TwoWay}" />
             <Views:CompassChartView DataContext="{Binding CompassDataModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=compassChartCheckBox, Mode=TwoWay}" />
             <Views:RotorsView DataContext="{Binding RotorsModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=rotorsCheckBox, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Views:ControllerView DataContext="{Binding ControllerModel}" Margin="2" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=controllerCheckBox, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         </Grid>
         <Views:ConnectionView DataContext="{Binding ConnectionModel}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Margin="10,2,2,2"/>

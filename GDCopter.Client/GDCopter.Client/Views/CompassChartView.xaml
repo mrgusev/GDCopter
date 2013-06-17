@@ -24,7 +24,7 @@
                 <d3:HorizontalAxis x:Name="horizontalAxis"/>
             </d3:ChartPlotter.HorizontalAxis>
             <d3:ChartPlotter.VerticalAxis>
-                <d3:VerticalIntegerAxis Name="verticalAxis"/>
+                <d3:VerticalAxis Name="verticalAxis"/>
             </d3:ChartPlotter.VerticalAxis>
             <d3:LineGraph x:Name="linegraph1" Stroke="DarkGreen"/>
             <d3:Header FontFamily="Arial" Content="Compass"/>

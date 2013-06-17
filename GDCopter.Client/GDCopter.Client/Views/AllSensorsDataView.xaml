@@ -33,7 +33,7 @@
                     <charting:HorizontalDateTimeAxis x:Name="dateAxis1"/>
                 </charting:ChartPlotter.HorizontalAxis>
                 <charting:ChartPlotter.VerticalAxis>
-                    <charting:VerticalIntegerAxis Name="countAxis"/>
+                    <charting:VerticalAxis Name="countAxis"/>
                 </charting:ChartPlotter.VerticalAxis>
                 <charting:LineGraph x:Name="linegraph1" Stroke="DarkGreen"/>
                 <charting:LineGraph x:Name="linegraph2" Stroke="CornflowerBlue"/>
@@ -48,7 +48,7 @@
                     <charting:HorizontalDateTimeAxis x:Name="dateAxis2" />
                 </charting:ChartPlotter.HorizontalAxis>
                 <charting:ChartPlotter.VerticalAxis>
-                    <charting:VerticalIntegerAxis />
+                    <charting:VerticalAxis />
                 </charting:ChartPlotter.VerticalAxis>
                 <charting:LineGraph x:Name="linegraph4" Stroke="DarkGreen" />
                 <charting:LineGraph x:Name="linegraph5" Stroke="CornflowerBlue"/>
@@ -61,7 +61,7 @@
                     <charting:HorizontalDateTimeAxis x:Name="dateAxis3" />
                 </charting:ChartPlotter.HorizontalAxis>
                 <charting:ChartPlotter.VerticalAxis>
-                    <charting:VerticalIntegerAxis />
+                    <charting:VerticalAxis />
                 </charting:ChartPlotter.VerticalAxis>
                 <charting:LineGraph x:Name="linegraph7" Stroke="DarkGreen"  />
                 <charting:LineGraph x:Name="linegraph8" Stroke="CornflowerBlue"/>
