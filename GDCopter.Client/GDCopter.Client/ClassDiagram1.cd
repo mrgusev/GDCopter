@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GDCopter.Client.App" Collapsed="true">
+    <Position X="21" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.CommunicationModule" Collapsed="true">
+    <Position X="24.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEQAAAAAAAgAQACAAABAAAQAIIAAAAAAAEAAAAAA=</HashCode>
+      <FileName>CommunicationModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.ControllerCommands" Collapsed="true">
+    <Position X="21" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAIAAAAAQAAAA=</HashCode>
+      <FileName>ControllerCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.InputMessage" Collapsed="true">
+    <Position X="24.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAIAAAAAAAAJAAAAA=</HashCode>
+      <FileName>InputMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.MainWindow" Collapsed="true">
+    <Position X="26.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAASAAAAAAAAAAAAAAAEAAAAAAABIAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.StatisticPoint" Collapsed="true">
+    <Position X="19.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAYQE=</HashCode>
+      <FileName>Models\StatisticPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.DataStreamEventArgs" Collapsed="true">
+    <Position X="22.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>SerialClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.SerialClient" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAAAADAAEIgAAAAAIAAACAAGAAAQIKCBBAAEAAA=</HashCode>
+      <FileName>SerialClient.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GDCopter_Client.Common.BooleanToVisibilityConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\BooleanToVisibilityConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GDCopter.Client.Models.AllSensorsDataModel" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAAAAQAAAA=</HashCode>
+      <FileName>Models\AllSensorsDataModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.ApplicationStateModel" Collapsed="true">
+    <Position X="14.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAJEEAAAABAAAAAAAAABIAAQAAAAABAABCAAAQBAAA=</HashCode>
+      <FileName>Models\ApplicationStateModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.CompassDataModel" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAgCEwAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CompassDataModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.ConnectionModel" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAACAACAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Models\ConnectionModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.MainModel" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>igAAAAAAQAAgAAAQEAAAAAAAAACAAAAAAAAAAAASAAA=</HashCode>
+      <FileName>Models\MainModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.ModelBase" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAIIAAQAAAhAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GDCopter.Client.Models.OrientationModel" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAEAACAAgAAAAAAAgAAgAABAAIAAABA=</HashCode>
+      <FileName>Models\OrientationModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.RotorsModel" Collapsed="true">
+    <Position X="16.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAC0AAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Models\RotorsModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Models.TerminalModel" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAACAAAAAAAAACAIAAAAABAAAAAEAgAMAQAAAA=</HashCode>
+      <FileName>Models\TerminalModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Properties.Resources" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Properties.Settings" Collapsed="true">
+    <Position X="26.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Services.AllSensorsDataService" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAEEAAAAAAAAAAAAIAAAAAAAAAI=</HashCode>
+      <FileName>Services\AllSensorsDataService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Services.CompassDataService" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAEEAAAAAAAAAAAAIAAAAAAAAAI=</HashCode>
+      <FileName>Services\CompassDataService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Services.OrientationService" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAI=</HashCode>
+      <FileName>Services\OrientationService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Services.RotorsService" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAABAAgAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAI=</HashCode>
+      <FileName>Services\RotorsService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Services.ServiceBase" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAgAAAAAAAAEIAgAAAAAAII=</HashCode>
+      <FileName>Services\ServiceBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Services.TerminalService" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAQAAAgAAAAACAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Services\TerminalService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Views.AllSensorsDataView" Collapsed="true">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAEgAAAAAAACAAAAgAAAAAAFAAAAAAAAAA=</HashCode>
+      <FileName>Views\AllSensorsDataView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Views.CompassChartView" Collapsed="true">
+    <Position X="26.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAEgAAABAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\CompassChartView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Views.ConnectionView" Collapsed="true">
+    <Position X="19.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAAAAAAAAAAgIU=</HashCode>
+      <FileName>Views\ConnectionView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Views.OrientationView" Collapsed="true">
+    <Position X="19.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAEgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\OrientationView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Views.RotorsView" Collapsed="true">
+    <Position X="22.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\RotorsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GDCopter.Client.Views.TerminalView" Collapsed="true">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAEAAAABAACAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Views\TerminalView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GDCopter.Client.ApplicationState" Collapsed="true">
+    <Position X="19.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAEAAAAAhAAAAQAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>ApplicationState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
