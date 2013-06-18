@@ -204,7 +204,7 @@ namespace GDCopter.Client
                 for (int i = 0 , k = 0; i < packetsAmount; i++)
                 {
                     packets.Add(new float[16]);
-                    for (int j = 0; j < 16; j++, k++)
+                    for (int j = 0; j < 17; j++, k++)
                     {
                         packets[i][j] = floatsArray[k];
                     }

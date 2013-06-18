@@ -19,7 +19,7 @@ class ClientService
 	}
 	void SendMessage(byte* message)
 	{
-		Serial.write(message, 64);
+		Serial.write(message, 68);
 	}
 	char* GetMessage()
 	{
