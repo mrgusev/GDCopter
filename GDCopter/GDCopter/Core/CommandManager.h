@@ -79,6 +79,7 @@ class CommandManager
 		_outputMessage.SetGyro(_sensorsService->GetGyroValues());
 		_outputMessage.SetAccel(_sensorsService->GetAccelValues());
 		_outputMessage.SetCompass(_sensorsService->GetCompassValues());
+		_outputMessage.SetAltitude(_stabilizator->GetAltitude());
 		
 		float r1, r2, r3, r4;
 		_controller->GetRotorSpeeds(&r1, &r2, &r3, &r4);

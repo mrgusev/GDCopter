@@ -14,8 +14,9 @@ class OutputMessage
 	Vector3f gyro;
 	Vector3f compass;
 	byte rotors[4];
+	float _altitude;
 	
-	float data[16];
+	float data[17];
 
 	public:
 	
@@ -37,6 +38,11 @@ class OutputMessage
 	void SetCompass(Vector3f vec)
 	{
 		compass = vec;
+	}
+	
+	void SetAltitude(float altitude)
+	{
+		altitude=_altitude;
 	}
 	
 	void SetRotors(float r1,float r2,float r3,float r4)
@@ -65,6 +71,7 @@ class OutputMessage
 		data[13] = rotors[1];
 		data[14] = rotors[2];
 		data[15] = rotors[3];
+		data[16] = _altitude;
 		return (byte*)data;
 	}
 };

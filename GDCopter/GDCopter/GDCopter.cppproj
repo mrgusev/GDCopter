@@ -153,6 +153,12 @@
     <Compile Include="Resources\Sensors\MPU6050.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Resources\Sensors\MS561101BA.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Resources\Sensors\MS561101BA.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Resources\Servo\Servo.cpp">
       <SubType>compile</SubType>
     </Compile>

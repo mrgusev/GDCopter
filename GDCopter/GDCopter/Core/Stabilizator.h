@@ -5,6 +5,7 @@
 *  Author: Kirill
 */
 
+#define SEA_PRESSURE 1013.25f
 #include "matrix3.h"
 
 class Stabilizator
@@ -15,12 +16,13 @@ class Stabilizator
 	SensorsService* _sensorsService;
 	Matrix3f rotationMatrix;
 	Vector3l earthAngles;
+	float _initialAltitude;
+	float _relativeAltitude;
 	
 	float currentPitch;
 	float currentYaw;
 	float currentRoll;
-	float currentAltitude;
-	
+	float currentAltitude;	
 	
 	public:
 	
@@ -32,11 +34,11 @@ class Stabilizator
 	{
 		_sensorsService = sensorsService;
 		_sensorsService->Innitialize();
+		_initialAltitude = CalculateAltitude(_sensorsService->GetTermometerValue(),_sensorsService->GetRawPressure());
 		previousMillis = 0;
 		rotationMatrix.a = Vector3f(1,0,0);
 		rotationMatrix.b = Vector3f(0,1,0);
 		rotationMatrix.c = Vector3f(0,0,1);
-		//earthAngles = Vector3l(0,0,0);
 		
 		FilterGyroCoef=0.7;
 		FilterAccelCoef=0.15;
@@ -46,6 +48,16 @@ class Stabilizator
 		currentYaw=0;
 		currentRoll=0;
 		currentAltitude = 0;
+	}
+	
+	float CalculateAltitude(float temperature, float pressure)
+	{
+		return ((pow((SEA_PRESSURE / pressure), 1/5.257) - 1.0) * (temperature + 273.15)) / 0.0065;
+	}
+	
+	void CalculateRelativeAltitude()
+	{
+		_relativeAltitude = CalculateAltitude(_sensorsService->GetTermometerValue(),_sensorsService->GetBarometerValue()) - _initialAltitude;
 	}
 	
 	void CalculateAngles()
@@ -95,7 +107,6 @@ class Stabilizator
 		earthAngles.z = currentRoll;
 	}
 
-
 	Vector3f GetOrientation()
 	{
 		return Vector3f(currentPitch, currentYaw, currentRoll);
@@ -108,11 +119,9 @@ class Stabilizator
 	
 	float GetAltitude()
 	{
-		return currentAltitude;
+		return _relativeAltitude;
 	}
-	
-	
-	
+		
 	float GetPitch()
 	{
 		return currentPitch;
