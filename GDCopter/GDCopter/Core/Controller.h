@@ -60,7 +60,7 @@ class Controller
 		*speed4 = fourthRotorSpeedSq;
 	}
 	
-	void SetRotorSpeeds(int speed1, int speed2, int speed3, int speed4)
+	void SetRotorSpeeds(float speed1, float speed2, float speed3, float speed4)
 	{
 		_speed1 = speed1;
 		_speed2 = speed2;
@@ -80,20 +80,21 @@ class Controller
 	
 	void Update()
 	{
-		switch (controllerState)
-		{
-			case StopRotors:
-			_speed1 = _speed2 = _speed3 = _speed4 = 0;
-			break;
-			case Stabilization:
-			CalculateMotorsSpeeds();
-			break;
-			case DirectValues:
-			break;
-			default:
-			_speed1 = _speed2 = _speed3 = _speed4 = 0;
-			break;
-		}
+		//switch (controllerState)
+		//{
+			//case StopRotors:
+			//_speed1 = _speed2 = _speed3 = _speed4 = 0;
+			//break;
+			//case Stabilization:
+			//CalculateMotorsSpeeds();
+			//break;
+			//case DirectValues:
+			//break;
+			//default:
+			//_speed1 = _speed2 = _speed3 = _speed4 = 0;
+			//break;
+		//}
+		CalculateMotorsSpeeds();
 		_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
 	}
 	

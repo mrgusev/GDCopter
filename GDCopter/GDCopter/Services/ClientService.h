@@ -24,9 +24,9 @@ class ClientService
 	char* GetMessage()
 	{
 		char * result;
-		if(Serial.available())
+		if(Serial.available()>16)
 		{
-			 Serial.readBytes(result, 7);
+			 Serial.readBytes(result, 16);
 		}
 		return result;
 	}
