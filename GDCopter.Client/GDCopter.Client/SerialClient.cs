@@ -195,15 +195,15 @@ namespace GDCopter.Client
                 TimeSpan tmpInterval = (DateTime.Now - _lastReceive);
 
                 /*Form The Packet in The Buffer*/
-                int packetsAmount = count / 64;
-                byte[] buf = new byte[packetsAmount*64];
-                int readBytes = Receive(buf, 0, packetsAmount*64);
+                int packetsAmount = count / 68;
+                byte[] buf = new byte[packetsAmount*68];
+                int readBytes = Receive(buf, 0, packetsAmount*68);
                 float[] floatsArray = new float[readBytes/4];
                 Buffer.BlockCopy(buf, 0, floatsArray, 0, buf.Length);
                 List<float[]> packets = new List<float[]>();
                 for (int i = 0 , k = 0; i < packetsAmount; i++)
                 {
-                    packets.Add(new float[16]);
+                    packets.Add(new float[17]);
                     for (int j = 0; j < 17; j++, k++)
                     {
                         packets[i][j] = floatsArray[k];
