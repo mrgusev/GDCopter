@@ -27,10 +27,15 @@ class Controller
 	float QuadRadius;	
 	float QuadMass;
 	
-	void Initialize(RotorService* rotorService)
+	void Initialize(RotorService* rotorService, Stabilizator* stabilizator)
 	{
 		_rotorService  = rotorService;
+		_stabilizator = stabilizator;
 		controllerState = Stabilization;
+		previousPitch = 0.0f;
+		previousYaw = 0.0f;
+		previousRoll = 0.0f;
+		previousAltitude = 0.0f;
 		
 		QuadInertiaX = 0.020126;
 		QuadInertiaY = 0.019842;
@@ -51,13 +56,21 @@ class Controller
 		RollProportionalCoef = 6;
 		YawProportionalCoef = 6;
 	}
-	
-	void GetRotorSpeeds(float* speed1, float* speed2, float* speed3, float* speed4)
+	float GetRotorSpeed1()
 	{
-		*speed1 = firstMotorSpeedSq;
-		*speed2 = secondMotorSpeedSq;
-		*speed3 = thirdRotorSpeedSq;
-		*speed4 = fourthRotorSpeedSq;
+		return firstMotorSpeedSq;
+	}
+	float GetRotorSpeed2()
+	{
+		return secondMotorSpeedSq;
+	}
+	float GetRotorSpeed3()
+	{
+		return thirdRotorSpeedSq;
+	}
+	float GetRotorSpeed4()
+	{
+		return fourthRotorSpeedSq;
 	}
 	
 	void SetRotorSpeeds(int speed1, int speed2, int speed3, int speed4)
@@ -73,28 +86,30 @@ class Controller
 		controllerState = state;	
 	}
 	
-	void SetDt(int dt)
+	void SetDt(float dt)
 	{
 		_dt = dt;
 	}
 	
 	void Update()
 	{
-		switch (controllerState)
-		{
-			case StopRotors:
-			_speed1 = _speed2 = _speed3 = _speed4 = 0;
-			break;
-			case Stabilization:
-			CalculateMotorsSpeeds();
-			break;
-			case DirectValues:
-			break;
-			default:
-			_speed1 = _speed2 = _speed3 = _speed4 = 0;
-			break;
-		}
-		_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
+		//switch (controllerState)
+		//{
+			//case StopRotors:
+			//_speed1 = _speed2 = _speed3 = _speed4 = 0;
+			//break;
+			//case Stabilization:
+			//CalculateMotorsSpeeds();
+			//break;
+			//case DirectValues:
+			//break;
+			//default:
+			//_speed1 = _speed2 = _speed3 = _speed4 = 0;
+			//break;
+		//}
+		//_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
+		
+		CalculateMotorsSpeeds();
 	}
 	
 	String Message;
@@ -111,7 +126,7 @@ class Controller
 	float thirdRotorSpeedSq;
 	float fourthRotorSpeedSq;
 	
-	int _dt;
+	float _dt;
 	int controllerState;
 	
 	int _speed1, _speed2, _speed3, _speed4;
@@ -120,16 +135,16 @@ class Controller
 	RotorService* _rotorService;
 	
 	void CalculateMotorsSpeeds()
-	{
+	{		
 		float currentAltitude = _stabilizator->GetAltitude();
 		float currentPitch = _stabilizator->GetPitch();
 		float currentRoll = _stabilizator->GetRoll();
 		float currentYaw = _stabilizator->GetYaw();
 		Matrix3f rotationMatrix = _stabilizator->GetRotationMatrix();
-		float totalThrust = (9.8f + ThrustDerivativeCoef * (previousAltitude - currentAltitude) / _dt - ThrustProportionalCoef * currentAltitude) * QuadMass / rotationMatrix.c.z;
-		float rollTorque = (ThrustDerivativeCoef * (previousRoll - currentRoll) / _dt - ThrustProportionalCoef * currentRoll) * QuadInertiaX;
-		float pitchTorque = (ThrustDerivativeCoef * (previousPitch - currentPitch) / _dt - ThrustProportionalCoef * currentPitch) * QuadInertiaY;
-		float yawTorque = (ThrustDerivativeCoef * (previousYaw - currentYaw) / _dt - ThrustProportionalCoef * currentYaw) * QuadInertiaZ;
+		float totalThrust = (9.8f + ThrustDerivativeCoef * (previousAltitude - currentAltitude)/_dt - ThrustProportionalCoef * currentAltitude) * QuadMass / rotationMatrix.c.z;
+		float rollTorque = (ThrustDerivativeCoef * (previousRoll - currentRoll)/_dt- ThrustProportionalCoef * currentRoll) * QuadInertiaX;
+		float pitchTorque = (ThrustDerivativeCoef * (previousPitch - currentPitch)/_dt  - ThrustProportionalCoef * currentPitch) * QuadInertiaY;
+		float yawTorque = (ThrustDerivativeCoef * (previousYaw - currentYaw)/_dt - ThrustProportionalCoef * currentYaw) * QuadInertiaZ;
 		
 		float thrustAdditive = totalThrust / 4 / RotorLiftConstant;
 		float pitchAdditive = pitchTorque / (2 * RotorLiftConstant * QuadRadius);
@@ -139,10 +154,20 @@ class Controller
 		//it is necessary to add the limitations for the values of the
 		//squared rotors' speeds (e. g. not less than zero) but it is
 		//supposed to be done in the future, while linearizing the
-		//dependency between the PWM value and a rotor's squared speed (just speed)
+		////dependency between the PWM value and a rotor's squared speed just speed)
 		firstMotorSpeedSq = thrustAdditive - pitchAdditive - yawAdditive;
 		secondMotorSpeedSq = thrustAdditive - rollAdditive + yawAdditive;
 		thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
 		fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
+		
+		//firstMotorSpeedSq = _dt;
+		//secondMotorSpeedSq = _dt;
+		//thirdRotorSpeedSq = _dt;
+		//fourthRotorSpeedSq = _dt;
+		
+		previousAltitude = currentAltitude;
+		previousPitch = currentPitch;
+		previousRoll = currentRoll;
+		previousYaw = currentYaw;
 	}
 };

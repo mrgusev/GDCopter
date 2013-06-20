@@ -11,7 +11,7 @@
 class Stabilizator
 {
 	private:
-	long dt;
+	int _dt;
 	long previousMillis;
 	SensorsService* _sensorsService;
 	Matrix3f rotationMatrix;
@@ -39,8 +39,8 @@ class Stabilizator
 		rotationMatrix.b = Vector3f(0,1,0);
 		rotationMatrix.c = Vector3f(0,0,1);
 		
-		FilterGyroCoef=0.7;
-		FilterAccelCoef=0.15;
+		FilterGyroCoef=0.9;
+		FilterAccelCoef=0.1;
 		FilterCompasCoef=0.15;
 		
 		currentPitch=0;
@@ -48,7 +48,10 @@ class Stabilizator
 		currentRoll=0;
 		currentAltitude = 0;
 	}
-	
+	void SetDt(int dt)
+	{
+		_dt = dt;
+	}
 	void CalculatePosition()
 	{
 		CalculateRelativeAltitude();
@@ -62,7 +65,7 @@ class Stabilizator
 	
 	void CalculateRelativeAltitude()
 	{
-		_relativeAltitude = CalculateAltitude(_sensorsService->GetTermometerValue(),_sensorsService->GetBarometerValue()) - _initialAltitude;
+		_relativeAltitude = _sensorsService->GetRawPressure();//CalculateAltitude(_sensorsService->GetTermometerValue(),_sensorsService->GetBarometerValue()) - _initialAltitude;
 	}
 	
 	void CalculateAngles()
@@ -71,24 +74,24 @@ class Stabilizator
 		
 		Vector3<float> currentGyroValues = _sensorsService->GetGyroValues();
 		Vector3<float> currentAccelValues = _sensorsService->GetAccelValues();
-		Vector3<float> currentCompassValues = _sensorsService->GetCompassValues();
+		//Vector3<float> currentCompassValues = _sensorsService->GetCompassValues();
 		
 		//¬ычисл€ем длины векторов, дл€ нахождени€ косинусов углов между ними и ос€ми
 		float gravityVectorLength = currentAccelValues.length();
-		float magneticVectorLength = currentCompassValues.length();
+		//float magneticVectorLength = currentCompassValues.length();
 		
 		//¬ычисл€ем косинусы углов между ос€ми инерционной и объектной систем
 		//¬ычисленные косинусы составл€ют первую и третью строки матрицы дл€ данной итерации
-		Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
+		//Vector3<float> currentRotationMatrixFirstRow = Vector3<float>(currentCompassValues.x/magneticVectorLength,currentCompassValues.y/magneticVectorLength,currentCompassValues.z/magneticVectorLength); //принципиально использование функции не из библиотеки,
 		Vector3<float> currentRotationMatrixThirdRow = Vector3<float>(-currentAccelValues.x/gravityVectorLength,-currentAccelValues.y/gravityVectorLength,-currentAccelValues.z/gravityVectorLength);       //так как там длина вычисл€етс€ несколько раз
 		//
 		//Ќаходим угловое приращение трем€ разными способами
-		Vector3f gyroAngularDisplacement = currentGyroValues * (float)dt/1000000.0f;
+		Vector3f gyroAngularDisplacement = currentGyroValues * (float)_dt/1000000.0f;
 		Vector3f accelAngularDisplacement = rotationMatrix.c % (currentRotationMatrixThirdRow - rotationMatrix.c);
-		Vector3f compasAngularDisplacement = rotationMatrix.a % (currentRotationMatrixFirstRow - rotationMatrix.a);
+		//Vector3f compasAngularDisplacement = rotationMatrix.a % (currentRotationMatrixFirstRow - rotationMatrix.a);
 		//
 		//Ќаходим среднее между трем€ способами
-		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  FilterGyroCoef + accelAngularDisplacement * FilterAccelCoef + compasAngularDisplacement * FilterCompasCoef;
+		Vector3f averageAngularDisplacement = gyroAngularDisplacement*  FilterGyroCoef + accelAngularDisplacement * FilterAccelCoef;// + compasAngularDisplacement * FilterCompasCoef;
 		
 		//Ќаходим новую матрицу поворота
 		rotationMatrix.a += (rotationMatrix.a % averageAngularDisplacement);
@@ -100,8 +103,8 @@ class Stabilizator
 		rotationMatrix.a -= rotationMatrix.c * error;
 		rotationMatrix.a.normalize();
 		rotationMatrix.c -= rotationMatrixOldA * error;
-		rotationMatrix.c.normalize();
-		rotationMatrix.b = rotationMatrix.a % rotationMatrix.c;
+		//rotationMatrix.c.normalize();
+		//rotationMatrix.b = rotationMatrix.a % rotationMatrix.c;
 		
 		currentPitch = -asin(rotationMatrix.c.y);
 		currentYaw= atan2(-rotationMatrix.c.x, rotationMatrix.c.z);

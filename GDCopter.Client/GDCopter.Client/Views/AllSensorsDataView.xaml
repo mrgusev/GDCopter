@@ -16,18 +16,16 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Button x:Name="runButton" Content="{Binding StatusAction}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="0,0,0,5" Click="RunButtonClick" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=gyroCheckBox}"/>
-        <StackPanel HorizontalAlignment="Left" Margin="100,0,0,0" VerticalAlignment="Center" Orientation="Horizontal">
-            <CheckBox Content="gyro" x:Name="gyroCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
-            <CheckBox Content="accel" x:Name="accelCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,0,0,0" IsChecked="True"/>
-            <CheckBox Content="compass" x:Name="compassCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,0,0,0" IsChecked="True"/>
-        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <charting:ChartPlotter Visibility="{Binding IsChecked, ElementName=gyroCheckBox}" Grid.Row="0" x:Name="plotter">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <charting:ChartPlotter  Grid.Row="0" x:Name="plotter">
 
                 <charting:ChartPlotter.HorizontalAxis>
                     <charting:HorizontalDateTimeAxis x:Name="dateAxis1"/>
@@ -56,7 +54,7 @@
 
                 <charting:Header FontFamily="Arial" Content="Accell"/>
             </charting:ChartPlotter >
-            <charting:ChartPlotter Grid.Row="2" x:Name="plotter3">
+            <charting:ChartPlotter Grid.Row="0" Grid.Column="1" x:Name="plotter3">
                 <charting:ChartPlotter.HorizontalAxis>
                     <charting:HorizontalDateTimeAxis x:Name="dateAxis3" />
                 </charting:ChartPlotter.HorizontalAxis>
@@ -68,6 +66,16 @@
                 <charting:LineGraph x:Name="linegraph9"  Stroke="Crimson"/>
 
                 <charting:Header FontFamily="Arial" Content="Compass"/>
+            </charting:ChartPlotter>
+            <charting:ChartPlotter Grid.Row="1" Grid.Column="1" x:Name="plotter4">
+                <charting:ChartPlotter.HorizontalAxis>
+                    <charting:HorizontalDateTimeAxis x:Name="dateAxis4" />
+                </charting:ChartPlotter.HorizontalAxis>
+                <charting:ChartPlotter.VerticalAxis>
+                    <charting:VerticalAxis />
+                </charting:ChartPlotter.VerticalAxis>
+                <charting:LineGraph x:Name="linegraph10" Stroke="DarkGreen"  />
+                <charting:Header FontFamily="Arial" Content="Barometer"/>
             </charting:ChartPlotter>
         </Grid>
     </Grid>

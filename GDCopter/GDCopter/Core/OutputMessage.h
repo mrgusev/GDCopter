@@ -13,7 +13,7 @@ class OutputMessage
 	Vector3f accel;
 	Vector3f gyro;
 	Vector3f compass;
-	byte rotors[4];
+	float rotors[4];
 	float _altitude;
 	
 	float data[17];
@@ -42,7 +42,7 @@ class OutputMessage
 	
 	void SetAltitude(float altitude)
 	{
-		altitude=_altitude;
+		_altitude = altitude;
 	}
 	
 	void SetRotors(float r1,float r2,float r3,float r4)

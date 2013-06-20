@@ -82,7 +82,10 @@ class CommandManager
 		_outputMessage.SetAltitude(_stabilizator->GetAltitude());
 		
 		float r1, r2, r3, r4;
-		_controller->GetRotorSpeeds(&r1, &r2, &r3, &r4);
+		r1 = _controller->GetRotorSpeed1();
+		r2 = _controller->GetRotorSpeed2();
+		r3 = _controller->GetRotorSpeed3();
+		r4 = _controller->GetRotorSpeed4();
 		_outputMessage.SetRotors(r1, r2, r3, r4);
 	}
 };

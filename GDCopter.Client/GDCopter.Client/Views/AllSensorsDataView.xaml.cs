@@ -33,12 +33,15 @@ namespace GDCopter.Client.Views
             plotter2.Legend.LegendTop = 10;
             plotter3.Legend.LegendLeft = 10;
             plotter3.Legend.LegendTop = 10;
+            plotter4.Legend.LegendLeft = 10;
+            plotter4.Legend.LegendTop = 10;
             //plotter.LegendVisible = false;
             //plotter2.LegendVisible = false;
             //plotter3.LegendVisible = false;
             dateAxis1.ShowMayorLabels = false;
             dateAxis2.ShowMayorLabels = false;
             dateAxis3.ShowMayorLabels = false;
+            dateAxis4.ShowMayorLabels = false;
             linegraph1.Description = new PenDescription("X");
             linegraph2.Description = new PenDescription("Y");
             linegraph3.Description = new PenDescription("Z");
@@ -48,6 +51,7 @@ namespace GDCopter.Client.Views
             linegraph7.Description = new PenDescription("X");
             linegraph8.Description = new PenDescription("Y");
             linegraph9.Description = new PenDescription("Z");
+            linegraph10.Description = new PenDescription("Height");
 
         }
 
@@ -72,18 +76,26 @@ namespace GDCopter.Client.Views
 
         private void UpdateCharts()
         {
-            if (gyroCheckBox.IsChecked.Value)
-            {
-                UpdateGyro();
-            }
-            if (accelCheckBox.IsChecked.Value)
-            {
-                UpdateAccell();
-            }
-            if (compassCheckBox.IsChecked.Value)
-            {
-                UpdateMag();
-            }
+            UpdateGyro();
+            UpdateAccell();
+            UpdateMag();
+            UpdateBaro();
+        }
+
+        private void UpdateBaro()
+        {
+            var model = (AllSensorsDataModel)DataContext;
+            var datesDataSource = new EnumerableDataSource<DateTime>(model.GyroValues.Select(d => d.Time));
+            datesDataSource.SetXMapping(x => dateAxis1.ConvertToDouble(x));
+
+            var numberXDataSource = new EnumerableDataSource<double>(model.PressureValuse.Select(p => p.Value));
+            numberXDataSource.SetYMapping(y => y);
+
+            CompositeDataSource compositeDataSource1 = new
+              CompositeDataSource(datesDataSource, numberXDataSource);
+
+            linegraph10.DataSource = compositeDataSource1;
+            plotter4.Viewport.FitToView();
         }
 
         void UpdateGyro()

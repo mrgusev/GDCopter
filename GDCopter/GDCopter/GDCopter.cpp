@@ -21,21 +21,22 @@ CommandManager commandManager;
 void setup()
 {
 	delay(10000);
-	previousMillis = 0;
 	sensorsService.Innitialize();
 	rotorService.Initialize();
 	clientService.Initialize();
 	stabilizator.Initialize(&sensorsService);
-	controller.Initialize(&rotorService);
+	controller.Initialize(&rotorService, &stabilizator);
 	commandManager.Initialize(&clientService, &stabilizator, &sensorsService, &controller);
 	pinMode(13,OUTPUT);
+	
+	previousMillis = micros();
 }
 
 void loop()
-{	
+{
 	unsigned long currentMillis = micros();
 	dt = currentMillis - previousMillis;
-	controller.SetDt(dt);
+	controller.SetDt(((float)dt)/1000000.0f);
 	stabilizator.SetDt(dt);
 	commandManager.SetDt(dt);
 	stabilizator.CalculatePosition();

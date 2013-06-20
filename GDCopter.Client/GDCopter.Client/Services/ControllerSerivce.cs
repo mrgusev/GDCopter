@@ -27,9 +27,9 @@ namespace GDCopter.Client.Services
                 var dataModel = (ControllerModel)Model;
                 dataModel.Throttle.Add(new SimpleStatisticPoint(dataModel.CurrentThrottle, DateTime.Now));
                 dataModel.Rotor1.Add(message.Rotor1);
-                dataModel.Rotor2.Add(message.Rotor1);
-                dataModel.Rotor3.Add(message.Rotor1);
-                dataModel.Rotor4.Add(message.Rotor1);
+                dataModel.Rotor2.Add(message.Rotor2);
+                dataModel.Rotor3.Add(message.Rotor3);
+                dataModel.Rotor4.Add(message.Rotor4);
 
                 if (dataModel.Rotor1.Count > 50)
                     dataModel.Rotor1.RemoveAt(0);

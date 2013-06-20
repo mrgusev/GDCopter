@@ -20,7 +20,7 @@ class SensorsService
 	{
 		Wire.begin();
 		accelgyro.initialize();
-		accelgyro.setI2CBypassEnabled(true);
+		//accelgyro.setI2CBypassEnabled(true);
 		accelgyro.setFullScaleGyroRange(3);
 		mag.initialize();
 		
@@ -80,9 +80,9 @@ class SensorsService
 		
 		gyroValues = (gyroValues/14.375f)*DEG_TO_RAD;
 		accellValues/= 16384.f;
-		_temperature = _barometer.getTemperature(MS561101BA_OSR_4096);
-		//if(temperature) { вроде нормально работает и без этого, но мало ли
-		//temp = temperature;
+		float temperature = _barometer.getTemperature(MS561101BA_OSR_4096);
+		if(temperature) //{ вроде нормально работает и без этого, но мало ли
+		_temperature = temperature;
 	//}
 	_pressure = _barometer.getPressure(MS561101BA_OSR_4096);
 	if (_pressure != NULL)
