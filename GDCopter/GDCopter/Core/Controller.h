@@ -7,9 +7,7 @@
 
 class Controller
 {
-	public:
-	
-	
+	public:	
 	float ThrustDerivativeCoef;
 	float PitchDerivativeCoef;
 	float RollDerivativeCoef;
@@ -25,14 +23,33 @@ class Controller
 	
 	float RotorLiftConstant;
 	float RotorDragConstant;
-	float QuadRadius;
 	
+	float QuadRadius;	
 	float QuadMass;
 	
 	void Initialize(RotorService* rotorService)
 	{
 		_rotorService  = rotorService;
 		controllerState = Stabilization;
+		
+		QuadInertiaX = 0.020126;
+		QuadInertiaY = 0.019842;
+		QuadInertiaZ = 0.038769;
+		
+		RotorLiftConstant = 0.000004;
+		RotorDragConstant = 0.000002;
+		
+		QuadRadius = 0.277;
+		QuadMass = 1.27;
+		
+		ThrustDerivativeCoef = 2.5;
+		PitchDerivativeCoef = 1.75;
+		RollDerivativeCoef = 1.75;
+		YawDerivativeCoef = 1.75;
+		ThrustProportionalCoef = 1.5;
+		PitchProportionalCoef = 6;
+		RollProportionalCoef = 6;
+		YawProportionalCoef = 6;
 	}
 	
 	void GetRotorSpeeds(float* speed1, float* speed2, float* speed3, float* speed4)
@@ -50,6 +67,7 @@ class Controller
 		_speed3 = speed3;
 		_speed4 = speed4;
 	}
+	
 	void SetState(ControllerState state)
 	{
 		controllerState = state;	
@@ -57,7 +75,7 @@ class Controller
 	
 	void SetDt(int dt)
 	{
-		_dt = dt;	
+		_dt = dt;
 	}
 	
 	void Update()
@@ -127,5 +145,4 @@ class Controller
 		thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
 		fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
 	}
-
 };

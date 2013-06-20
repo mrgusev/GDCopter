@@ -24,8 +24,7 @@ class Stabilizator
 	float currentRoll;
 	float currentAltitude;	
 	
-	public:
-	
+	public:	
 	float FilterGyroCoef;
 	float FilterAccelCoef;
 	float FilterCompasCoef;
@@ -48,6 +47,12 @@ class Stabilizator
 		currentYaw=0;
 		currentRoll=0;
 		currentAltitude = 0;
+	}
+	
+	void CalculatePosition()
+	{
+		CalculateRelativeAltitude();
+		CalculateAngles();
 	}
 	
 	float CalculateAltitude(float temperature, float pressure)
