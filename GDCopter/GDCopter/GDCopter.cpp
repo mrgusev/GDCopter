@@ -38,7 +38,7 @@ void loop()
 	controller.SetDt(dt);
 	stabilizator.SetDt(dt);
 	commandManager.SetDt(dt);
-	stabilizator.CalculateAngles();
+	stabilizator.CalculatePosition();
 	controller.Update();
 	commandManager.Update();
 	previousMillis=currentMillis;
