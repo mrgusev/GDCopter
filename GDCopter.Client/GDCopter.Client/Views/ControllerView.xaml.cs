@@ -92,7 +92,7 @@ namespace GDCopter.Client.Views
 
         private void RunButtonClick(object sender, RoutedEventArgs e)
         {
-            var values = ((OrientationModel)DataContext);
+            var values = ((ControllerModel)DataContext);
             values.IsRunning = !values.IsRunning;
 
         }

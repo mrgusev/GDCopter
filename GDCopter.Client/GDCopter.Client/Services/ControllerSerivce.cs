@@ -46,8 +46,8 @@ namespace GDCopter.Client.Services
         public override void Run()
         {
             base.Run();
-            var dataModel = (ControllerModel)Model;
-            //_timer.Start();
+            //var dataModel = (ControllerModel)Model;
+            _timer.Start();
         }
 
         public override void Stop()

@@ -50,13 +50,21 @@ class SensorsService
 		yAccelOffset = -100.0f;
 		zAccelOffset = -650.0f;
 		
-		xCompassOffset = 50.0f;
+		xCompassOffset = 0.0f;
 		yCompassOffset = 300.0f;
 		zCompassOffset = 75.0f;
 		
-		xCompassScale = 500.0f;
+		xCompassScale = 550.0f;
 		yCompassScale = 1000.0f;
 		zCompassScale = 850.0f;
+		
+		//xCompassOffset = 0;
+		//yCompassOffset = 0;
+		//zCompassOffset = 0;
+		//
+		//xCompassScale = 1;
+		//yCompassScale = 1;
+		//zCompassScale = 1;
 		//To add the definition for the magntometer and accel offsets
 	}
 	

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 using GDCopter.Client.Models;
 
@@ -29,12 +25,15 @@ namespace GDCopter.Client.Services
                 dataModel.GyroValues.Add(message.Gyro);
                 dataModel.AccelValues.Add(message.Accell);
                 dataModel.CompassValues.Add(message.Compass);
+                dataModel.PressureValuse.Add(message.Pressure);
                 if (dataModel.GyroValues.Count > 50)
                     dataModel.GyroValues.RemoveAt(0);
                 if (dataModel.AccelValues.Count > 50)
                     dataModel.AccelValues.RemoveAt(0);
                 if (dataModel.CompassValues.Count > 50)
                     dataModel.CompassValues.RemoveAt(0);
+                if(dataModel.PressureValuse.Count > 50)
+                    dataModel.PressureValuse.RemoveAt(0);
                 dataModel.Update();
             }
         }

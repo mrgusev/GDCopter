@@ -10,11 +10,14 @@ namespace GDCopter.Client.Models
 
         public List<StatisticPoint> CompassValues { get; private set; }
 
+        public List<SimpleStatisticPoint> PressureValuse { get; private set; } 
+
         public AllSensorsDataModel()
         {
             GyroValues = new List<StatisticPoint>();
             AccelValues = new List<StatisticPoint>();
             CompassValues = new List<StatisticPoint>();
+            PressureValuse = new List<SimpleStatisticPoint>();
         }
 
         public void Update()

@@ -36,6 +36,7 @@ void loop()
 	unsigned long currentMillis = micros();
 	dt = currentMillis - previousMillis;
 	controller.SetDt(dt);
+	stabilizator.SetDt(dt);
 	commandManager.SetDt(dt);
 	stabilizator.CalculateAngles();
 	controller.Update();

@@ -45,13 +45,13 @@ namespace GDCopter.Client.Views
             var datesDataSource = new EnumerableDataSource<DateTime>(values.Select(d => d.Time));
             datesDataSource.SetXMapping(x => dateAxis1.ConvertToDouble(x));
 
-            var numberXDataSource = new EnumerableDataSource<double>(values.Select(p => p.X));
+            var numberXDataSource = new EnumerableDataSource<double>(values.Select(p => p.X * 57.295));
             numberXDataSource.SetYMapping(y => y);
 
-            var numberYDataSource = new EnumerableDataSource<double>(values.Select(p => p.Y));
+            var numberYDataSource = new EnumerableDataSource<double>(values.Select(p => p.Y * 57.295));
             numberYDataSource.SetYMapping(y => y);
 
-            var numberZDataSource = new EnumerableDataSource<double>(values.Select(p => p.Z));
+            var numberZDataSource = new EnumerableDataSource<double>(values.Select(p => p.Z * 57.295));
             numberZDataSource.SetYMapping(y => y);
 
             CompositeDataSource compositeDataSource1 = new
