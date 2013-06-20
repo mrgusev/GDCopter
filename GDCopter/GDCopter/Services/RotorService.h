@@ -16,7 +16,7 @@ public:
 		rotor4.attach(12);
 	}
 	
-	void SetRotorsSpeed(int r1, int r2, int r3, int r4)
+	void SetRotorsSpeed(float r1, float r2, float r3, float r4)
 	{
 		rotor1.write( map(r1, 0, 1023, 0, 179));
 		rotor2.write( map(r2, 0, 1023, 0, 179));
