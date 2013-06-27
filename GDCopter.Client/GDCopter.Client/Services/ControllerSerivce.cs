@@ -25,6 +25,10 @@ namespace GDCopter.Client.Services
             {
                 var message = CommunicationModule.LastMessage;
                 var dataModel = (ControllerModel)Model;
+                CommunicationModule.OutputMessage.Rotor1 = (float)dataModel.CurrentThrottle;
+                CommunicationModule.OutputMessage.Rotor2 = (float)dataModel.CurrentThrottle;
+                CommunicationModule.OutputMessage.Rotor3 = (float)dataModel.CurrentThrottle;
+                CommunicationModule.OutputMessage.Rotor4 = (float)dataModel.CurrentThrottle;
                 dataModel.Throttle.Add(new SimpleStatisticPoint(dataModel.CurrentThrottle, DateTime.Now));
                 dataModel.Rotor1.Add(message.Rotor1);
                 dataModel.Rotor2.Add(message.Rotor2);

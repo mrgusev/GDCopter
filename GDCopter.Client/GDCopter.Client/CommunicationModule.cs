@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using GDCopter.Client.Models;
 
 namespace GDCopter.Client
@@ -16,10 +17,14 @@ namespace GDCopter.Client
 
         private InputMessage _receivedMessage;
 
+        public OutputMessage OutputMessage { get; private set; }
+
+
         public CommunicationModule(ConnectionModel connectionModel)
         {
             ConnectionModel = connectionModel;
             connectionModel.PropertyChanged += ConnectionModelPropertyChanged;
+            OutputMessage = new OutputMessage();
         }
 
         public bool OpenConnection()
@@ -41,7 +46,7 @@ namespace GDCopter.Client
 
         public bool CloseConnection()
         {
-            SendMessage(ControllerCommands.Stop);
+            //SendMessage(ControllerCommands.Stop);
             SerialClient.CloseConn();
             SerialClient.OnReceiving -= DataReceived;
             return false;
@@ -61,6 +66,7 @@ namespace GDCopter.Client
             {
                 _receivedMessage = new InputMessage(dataStreamEventArgs.Response.First());
                 OnDataRecieved("Message");
+             //   SendMessage();
             }
             catch (Exception)
             {
@@ -68,12 +74,11 @@ namespace GDCopter.Client
             }
         }
 
-        public void SendMessage(string message)
+        private void SendMessage()
         {
             try
             {
-                //if (SerialPort.IsOpen)
-                //    SerialPort.Write(message);
+                SerialClient.Transmit(OutputMessage.GetBytes());
             }
             catch (Exception)
             {

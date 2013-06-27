@@ -73,7 +73,7 @@ class Controller
 		return fourthRotorSpeedSq;
 	}
 	
-	void SetRotorSpeeds(int speed1, int speed2, int speed3, int speed4)
+	void SetRotorSpeeds(float speed1, float speed2, float speed3, float speed4)
 	{
 		_speed1 = speed1;
 		_speed2 = speed2;
@@ -93,23 +93,8 @@ class Controller
 	
 	void Update()
 	{
-		//switch (controllerState)
-		//{
-			//case StopRotors:
-			//_speed1 = _speed2 = _speed3 = _speed4 = 0;
-			//break;
-			//case Stabilization:
-			//CalculateMotorsSpeeds();
-			//break;
-			//case DirectValues:
-			//break;
-			//default:
-			//_speed1 = _speed2 = _speed3 = _speed4 = 0;
-			//break;
-		//}
-		//_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
-		
 		CalculateMotorsSpeeds();
+		_rotorService->SetRotorsSpeed(_speed1, _speed2, _speed3, _speed4);
 	}
 	
 	String Message;
@@ -155,15 +140,15 @@ class Controller
 		//squared rotors' speeds (e. g. not less than zero) but it is
 		//supposed to be done in the future, while linearizing the
 		////dependency between the PWM value and a rotor's squared speed just speed)
-		firstMotorSpeedSq = thrustAdditive - pitchAdditive - yawAdditive;
-		secondMotorSpeedSq = thrustAdditive - rollAdditive + yawAdditive;
-		thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
-		fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
+		//firstMotorSpeedSq = thrustAdditive - pitchAdditive - yawAdditive;
+		//secondMotorSpeedSq = thrustAdditive - rollAdditive + yawAdditive;
+		//thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
+		//fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
 		
-		//firstMotorSpeedSq = _dt;
-		//secondMotorSpeedSq = _dt;
-		//thirdRotorSpeedSq = _dt;
-		//fourthRotorSpeedSq = _dt;
+		firstMotorSpeedSq = _dt;
+		secondMotorSpeedSq = _dt;
+		thirdRotorSpeedSq = _dt;
+		fourthRotorSpeedSq = _dt;
 		
 		previousAltitude = currentAltitude;
 		previousPitch = currentPitch;

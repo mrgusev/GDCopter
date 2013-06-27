@@ -29,21 +29,21 @@ namespace GDCopter.Client.Services
         {
             var rotorsModel = (RotorsModel) Model;
             string message = String.Format("@{0}#{1}#{2}#{3}#", rotorsModel.Rotor1, rotorsModel.Rotor2, rotorsModel.Rotor3, rotorsModel.Rotor4);
-            CommunicationModule.SendMessage(message);
+           // CommunicationModule.SendMessage(message);
         }
 
         private void  StopAllRotors()
         {
             var rotorsModel = (RotorsModel)Model;
             rotorsModel.Rotor1 = rotorsModel.Rotor2 = rotorsModel.Rotor3 = rotorsModel.Rotor4 = 100;
-            CommunicationModule.SendMessage("*stop");
+          //  CommunicationModule.SendMessage("*stop");
         }
 
         public override void Run()
         {
             base.Run();
             var rotorsModel = (RotorsModel)Model;
-            CommunicationModule.SendMessage("*directvalues");
+          //  CommunicationModule.SendMessage("*directvalues");
             rotorsModel.Rotor1 = rotorsModel.Rotor2 = rotorsModel.Rotor3 = rotorsModel.Rotor4 = 100;
             Thread.Sleep(10);
             _timer.Start();

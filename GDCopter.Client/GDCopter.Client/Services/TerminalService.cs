@@ -43,7 +43,7 @@ namespace GDCopter.Client.Services
         {
             if (IsRunning && CommunicationModule.ConnectionModel.IsRunning)
             {
-                CommunicationModule.SendMessage(message);
+             //   CommunicationModule.SendMessage(message);
                 TerminalModel.SentMessages.Add(new KeyValuePair<string, DateTime>(message + "\n", DateTime.Now));
             }
         }

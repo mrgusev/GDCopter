@@ -34,14 +34,14 @@ namespace GDCopter.Client.Services
         public override void Run()
         {
             base.Run();
-            CommunicationModule.SendMessage(ControllerCommands.Orientation);
+           // CommunicationModule.SendMessage(ControllerCommands.Orientation);
             _timer.Start();
         }
 
         public override void Stop()
         {
             base.Stop();
-            CommunicationModule.SendMessage(ControllerCommands.Stop);
+            //CommunicationModule.SendMessage(ControllerCommands.Stop);
             _timer.Stop();
         }
     }

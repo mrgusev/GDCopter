@@ -30,10 +30,10 @@ class CommandManager
 		if(_timerCount >= 50)
 		{
 			_timerCount -= 50;
-			//_inputMessage.Parse(_clientService->GetMessage());
-			//SetInputCommands();
 			SetOutputData();
 			_clientService->SendMessage(_outputMessage.GetBytes());
+			//_inputMessage.Parse(_clientService->GetMessage());
+			//SetInputCommands();
 		}
 	}
 	
@@ -54,23 +54,24 @@ class CommandManager
 	
 	void SetInputCommands()
 	{
-		if(_inputMessage.setState)
-		{
-			_controller->SetState(_inputMessage.controllerState);
-		}
-		if(_inputMessage.setSendingData)
-		{
-			//sendingDataTypes = _inputMessage.sendingDataTypes;
-		}
-		if(_inputMessage.setRotorSpeeds)
-		{
-			_controller->SetRotorSpeeds(_inputMessage.rotorSpeeds[0],_inputMessage.rotorSpeeds[1],
-				_inputMessage.rotorSpeeds[2],_inputMessage.rotorSpeeds[3]);
-		}
-		if(_inputMessage.resetAll)
-		{
-			
-		}
+		
+		_controller->SetRotorSpeeds(_inputMessage.rotorSpeeds[0],_inputMessage.rotorSpeeds[1],
+		_inputMessage.rotorSpeeds[2],_inputMessage.rotorSpeeds[3]);
+		//if(_inputMessage.setState)
+		//{
+			//_controller->SetState(_inputMessage.controllerState);
+		//}
+		//if(_inputMessage.setSendingData)
+		//{
+			////sendingDataTypes = _inputMessage.sendingDataTypes;
+		//}
+		//if(_inputMessage.setRotorSpeeds)
+		//{
+		//}
+		//if(_inputMessage.resetAll)
+		//{
+			//
+		//}
 	}
 	
 	void SetOutputData()
