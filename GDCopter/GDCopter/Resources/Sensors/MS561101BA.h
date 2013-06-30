@@ -67,7 +67,7 @@ class MS561101BA {
   public:
     MS561101BA();
     void init(uint8_t addr);
-    float getPressure(uint8_t OSR);
+    float getPressure(uint8_t OSR, float* temperature);
     float getTemperature(uint8_t OSR);
     int32_t getDeltaTemp(uint8_t OSR);
     uint32_t rawPressure(uint8_t OSR);

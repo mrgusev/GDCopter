@@ -140,15 +140,15 @@ class Controller
 		//squared rotors' speeds (e. g. not less than zero) but it is
 		//supposed to be done in the future, while linearizing the
 		////dependency between the PWM value and a rotor's squared speed just speed)
-		//firstMotorSpeedSq = thrustAdditive - pitchAdditive - yawAdditive;
-		//secondMotorSpeedSq = thrustAdditive - rollAdditive + yawAdditive;
-		//thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
-		//fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
+		firstMotorSpeedSq = thrustAdditive - pitchAdditive - yawAdditive;
+		secondMotorSpeedSq = thrustAdditive - rollAdditive + yawAdditive;
+		thirdRotorSpeedSq = thrustAdditive + pitchAdditive - yawAdditive;
+		fourthRotorSpeedSq = thrustAdditive + rollAdditive + yawAdditive;
 		
-		firstMotorSpeedSq = _dt;
-		secondMotorSpeedSq = _dt;
-		thirdRotorSpeedSq = _dt;
-		fourthRotorSpeedSq = _dt;
+		//firstMotorSpeedSq = _dt;
+		//secondMotorSpeedSq = _dt;
+		//thirdRotorSpeedSq = _dt;
+		//fourthRotorSpeedSq = _dt;
 		
 		previousAltitude = currentAltitude;
 		previousPitch = currentPitch;

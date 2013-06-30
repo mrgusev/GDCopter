@@ -29,7 +29,7 @@ namespace GDCopter.Client.Services
                 CommunicationModule.OutputMessage.Rotor2 = (float)dataModel.CurrentThrottle;
                 CommunicationModule.OutputMessage.Rotor3 = (float)dataModel.CurrentThrottle;
                 CommunicationModule.OutputMessage.Rotor4 = (float)dataModel.CurrentThrottle;
-                dataModel.Throttle.Add(new SimpleStatisticPoint(dataModel.CurrentThrottle, DateTime.Now));
+                dataModel.Throttle.Add(message.Pressure);
                 dataModel.Rotor1.Add(message.Rotor1);
                 dataModel.Rotor2.Add(message.Rotor2);
                 dataModel.Rotor3.Add(message.Rotor3);
@@ -43,6 +43,8 @@ namespace GDCopter.Client.Services
                     dataModel.Rotor3.RemoveAt(0);
                 if (dataModel.Rotor4.Count > 50)
                     dataModel.Rotor4.RemoveAt(0);
+                if(dataModel.Throttle.Count > 50)
+                    dataModel.Throttle.RemoveAt(0);
                 dataModel.Update();
             }
         }

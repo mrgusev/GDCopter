@@ -65,7 +65,7 @@ class Stabilizator
 	
 	void CalculateRelativeAltitude()
 	{
-		_relativeAltitude = _sensorsService->GetRawPressure();//CalculateAltitude(_sensorsService->GetTermometerValue(),_sensorsService->GetBarometerValue()) - _initialAltitude;
+		_relativeAltitude = CalculateAltitude(_sensorsService->GetTermometerValue(),_sensorsService->GetBarometerValue()) - _initialAltitude;
 	}
 	
 	void CalculateAngles()

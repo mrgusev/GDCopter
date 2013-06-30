@@ -26,22 +26,36 @@ class SensorsService
 		
 		_barometer.init(MS561101BA_ADDR_CSB_LOW);
 		delay(100);
-		
+		float temp;
 		float initialPressureBuffer[100];
+		
+		float tempTemp = 1.0f, tempPres = 1.0f;
+		_pressure = 1.0f;
 		for (int i=99; i>=0; i--)
 		{
-			_pressure = _barometer.getPressure(MS561101BA_OSR_4096);
-			if(_pressure != NULL)
+			tempPres =_barometer.getPressure(MS561101BA_OSR_4096, &tempTemp);
+			if(tempTemp != 0)
 			{
-				initialPressureBuffer[i]=_barometer.getPressure(MS561101BA_OSR_4096);
-				if (i<BAROMETER_BUF_SIZE)
-				{
-					PushToBarometerBuffer(_pressure);
-				}
+				_temperature = tempTemp;//чтобы после инициализации его считал Stabilizator для нахождения начальной высоты
 			}
+			if(tempPres !=0)
+			{			
+				_pressure = tempPres;
+			}	
+							
+			initialPressureBuffer[i] = _pressure;		
+			if (i<BAROMETER_BUF_SIZE)
+			{
+				PushToBarometerBuffer(_pressure);
+			}
+			if(tempPres == 0 || tempTemp == 0)
+			{
+				i++;
+			}
+			delay(10);
 		}
 		_pressure = GetAverage(initialPressureBuffer, 100);				//тут _pressure единственный раз хранит среднее давление,
-		_temperature = _barometer.getTemperature(MS561101BA_OSR_4096);//чтобы после инициализации его считал Stabilizator для нахождения начальной высоты
+		
 		
 		xGyroOffset = -37.61f;
 		yGyroOffset = 6.68f;
@@ -80,16 +94,20 @@ class SensorsService
 		
 		gyroValues = (gyroValues/14.375f)*DEG_TO_RAD;
 		accellValues/= 16384.f;
-		float temperature = _barometer.getTemperature(MS561101BA_OSR_4096);
-		if(temperature) //{ вроде нормально работает и без этого, но мало ли
+		float temperature;
+		float tempPressure = _barometer.getPressure(MS561101BA_OSR_4096, &temperature);
+		if(tempPressure != 0)
+		{
+			_pressure =tempPressure;
+		}			
+		if(temperature != 0) //{ вроде нормально работает и без этого, но мало ли
 		_temperature = temperature;
 	//}
-	_pressure = _barometer.getPressure(MS561101BA_OSR_4096);
-	if (_pressure != NULL)
-	{
-		PushToBarometerBuffer(_pressure);
+		if (_pressure != NULL)
+		{
+			PushToBarometerBuffer(_pressure);
+		}
 	}
-}
 
 Vector3<float> GetGyroValues()
 {

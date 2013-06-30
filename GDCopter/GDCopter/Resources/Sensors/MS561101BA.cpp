@@ -22,7 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-
+#include "Arduino.h"
+#include "Wire.h"
 #include "MS561101BA.h"
 #define CONVERSION_TIME 10000l // conversion time in microseconds
 
@@ -65,12 +66,15 @@ void MS561101BA::init(uint8_t address) {
   readPROM(); // reads the PROM into object variables for later use
 }
 
-float MS561101BA::getPressure(uint8_t OSR) {
+float MS561101BA::getPressure(uint8_t OSR, float* temperature ) {
   // see datasheet page 7 for formulas
   
   int32_t dT = getDeltaTemp(OSR);
   if(dT == NULL) {
     return NULL;
+  }
+  if(dT != NULL) {
+	  *temperature = (2000 + ((dT * _C[5]) >> 23)) / 100.0;
   }
   
   uint32_t rawPress = rawPressure(OSR);
